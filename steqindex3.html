@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Home | Sun Times Equivalence Thing</title>
+<meta charset=UTF-8>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+p, a, em, u, td, ol, li, pre, select, option, span, input {font-family: Georgia, Verdana, sans-serif; font-size: 18px; color: white;}
+tr {vertical-align: top; }
+td {padding-bottom: 5px; padding-right: 10px;   border-bottom: 1px solid #ddd; }
+table { border-collapse: collapse; }
+select, option, span, input, button, select {color: black;}
+#content {margin-left: 10px;}
+#loadedmsg {margin-bottom: 0px;}
+#steqfile {opacity: 0; position: absolute; z-index: -1;}
+#submit {opacity: 0; position: absolute; z-index: -1;}
+.mockbutton {display: block; background: #ddd; color: #000; cursor: pointer; font-size: 18px; font-family: Georgia, Verdana, sans-serif; display: inline-block; padding: 5px; border-radius: 3px;}
+label {cursor: pointer;}
+h1, h2, h3 {font-family: Verdana, sans-serif; color: white;}
+a:visited {color: blue; text-decoration: none; }
+a:hover {color: orange; }
+button {font-size: 18px; font-family: Georgia, Verdana, sans-serif;}
+h1 {font-size: 60px;}
+.pubtime {font-family: Georgia; font-size: 12pt; font-style: italic; }
+.error {color: red; }
+.top {background-color: #44bbff; top: 0; left: 0;}
+.whitetext {color: white;}
+.white {color: white; font-size: 60px; font-family: Verdana, sans-serif; font-weight: bold; position: absolute; top: 50%; transform: translate(0, -50%); margin: 0px;}
+svg {float: left; height: 120px; }
+@media only screen and (max-width: 1130px) {
+.white {font-size: 48px; }
+svg {height: 96px;}
+}
+@media only screen and (max-width: 930px) {
+    .white {font-size: 36px;}
+    svg {height: 72px;}
+}
+@media only screen and (max-width: 730px) {
+    .white {font-size: 24px;}
+    svg {height: 48px;}
+}
+@media only screen and (max-width: 470px) {
+    .white {font-size: 18px;}
+    svg {height: 36px;}
+}
+div {overflow: hidden; position: relative; }
+body {margin: 0; background-color: #444}
+</style>
+</head>
+<body>
+<div class="top">
+<svg viewBox = "0 0 120 120">
+<circle cx="60" cy="60" r="56" fill="#ffde72" stroke="black" stroke-width="2"/>
+<line x1="60" y1="60" x2="105" y2="66" style="stroke:rgb(0,0,0);stroke-width:2" />
+<line x1="60" y1="60" x2="90" y2="48" style="stroke:rgb(0,0,0);stroke-width:2" />
+</svg>
+<span class="white">Sun Times Equivalence Thing</span>
+</div>
+<div id="content">
+<p>Thank you for visiting the website of the Sun Times Equivalence Thing! It was one of my past passion projects; I worked on it occasionally from 2018 to 2020, but haven't worked on it since.</p>
+<p>The website allows you to input your location and then allows you to choose any day of the year. It will calculate that day's sunrise and sunset times as well of the duration of daylight, and then find other days in the year that have the same sunrise time, sunset time, or duration of daylight. Click here to view the latest version of the Sun Times Equivalence Thing, or look below to see a version history.</p>
+<p>You will need an STEQ file for versions prior to July 2019&mdash;<a href="converter.html">get yours here!</a>
+<!--p>Versions from xx and before require a STEQ file to use; versions after generate the data on-the-fly. I used to generate these files myself with data from the USNO, but for the purposes of this archive I created a converter that will allow you to generate your own.</p-->
+<table>
+<tr><td>May 16, 2020</td>
+<td>
+<a href="archive/steqintl3b6-4.html">steqintl3b6-4</a>
+</td></tr>
+<tr><td>May 15, 2020</td>
+<td>
+<a href="archive/steqintl3b6-3.html">steqintl3b6-3</a><br>
+<a href="archive/steqintl3b6-2.html">steqintl3b6-2</a>
+</td></tr>
+<tr><td>July 21, 2019</td>
+<td>
+<a href="archive/steqintl3b6.html">steqintl3b6</a>
+</td></tr>
+<tr><td>July 20, 2019</td>
+<td>
+<a href="archive/steqintl3b5.html">steqintl3b5</a>
+</td></tr>
+<tr><td>June 14, 2019</td>
+<td>
+<a href="archive/steqintl3b5june.html">steqintl3b5</a>
+</td></tr>
+<tr><td>June 5, 2019</td>
+<td>
+<a href="archive/steqintl3b5bknjune.html">steqintl3b5 (broken)</a>
+</td></tr>
+</td></tr>
+<tr><td>September 15, 2018</td>
+<td>
+<a href="archive/steqintl3b5bknsep.html">steqintl3b5 (broken)</a>
+</td></tr>
+</td></tr>
+<tr><td>August 23, 2018</td>
+<td>
+<a href="archive/steqintl3b4aug.html">steqintl3b4 (August)</a>
+</td></tr>
+<tr><td>July 29, 2018</td>
+<td>
+<a href="archive/steqintl3b4.html">steqintl3b4</a>
+</td></tr>
+<tr><td>July 28, 2018</td>
+<td>
+<a href="archive/steqintl3b3.html">steqintl3b3</a><br>
+<a href="archive/steqintl3b2.html">steqintl3b2</a>
+</td></tr>
+<tr><td>July 23, 2018</td>
+<td>
+<a href="archive/steqlog.html">STEQ Logo 3 prgm</a><br>
+<a href="archive/steqintl3b.html">steqintl3b</a>
+</td></tr>
+<tr><td>July 5, 2018</td>
+<td>
+<a href="archive/steqintl3a.html">steqintl3a</a>
+</td></tr>
+<tr><td>July 4, 2018</td>
+<td>
+<a href="archive/steqintl3.html">steqintl3</a>
+</td></tr>
+<tr><td>July 3, 2018</td>
+<td>
+<a href="archive/steqintl2.html">steqintl2</a>
+</td></tr>
+<tr><td>June 13, 2018</td>
+<td>
+<a href="archive/steqintl.html">steqintl</a>
+</td></tr>
+<tr><td>February 3, 2018</td>
+<td>
+<a href="archive/sun3.html">sun3</a><br>
+<a href="archive/sun2.html">sun2</a><br>
+<a href="archive/sun.html">sun</a><br>
+</table>
+</div></body></html>
