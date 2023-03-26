@@ -49,3 +49,4 @@ select.mockbutton, input.mockbutton, button.mockbutton {border-style: solid; bor
 #dirs {display:none;}	
 ul {list-style-type: none;}	
 ul li.dash:before { content: '\2014'; position: absolute; margin-left: -20px; }
+input[type='number']{ width: 120px; } 
