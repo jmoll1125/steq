@@ -2,60 +2,9 @@
 <html lang="en">
 <head>
 <title>File format descriptions | Sun Times Equivalence Thing</title>
+<link rel="stylesheet" href="steq.css">
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-p, a, em, u, td, ol, li, pre, select, option, span, input, div {font-family: Georgia, Verdana, sans-serif; font-size: 18px; color: white;}
-tr {vertical-align: top; }
-td {padding-bottom: 5px; padding-right: 10px;   border-bottom: 1px solid #ddd; }
-table { border-collapse: collapse; }
-select, option, span, input, button, select {color: black;}
-#content {margin-left: 10px;}
-#loadedmsg {margin-bottom: 0px;}
-#steqfile {opacity: 0; position: absolute; z-index: -1;}
-#submit {opacity: 0; position: absolute; z-index: -1;}
-.mockbutton {display: block; background: #ddd; color: #000; font-size: 18px; font-family: Georgia, Verdana, sans-serif; display: inline-block; padding: 5px; border-radius: 3px;}
-label {cursor: pointer;}
-h1, h2, h3 {font-family: Verdana, sans-serif; color: white;}
-a:visited {color: #ddd; text-decoration: none; }
-a:hover {color: orange; }
-button {font-size: 18px; font-family: Georgia, Verdana, sans-serif;}
-h1 {font-size: 60px;}
-.pubtime {font-family: Georgia; font-size: 12pt; font-style: italic; }
-.error {color: red; }
-.top {background-color: #44bbff; top: 0; left: 0;}
-.whitetext {color: white;}
-.white {color: white; font-size: 60px; font-family: Verdana, sans-serif; font-weight: bold; position: absolute; top: 50%; transform: translate(0, -50%); margin: 0px;}
-svg {float: left; height: 120px; }
-@media only screen and (max-width: 1130px) {
-.white {font-size: 48px; }
-svg {height: 96px;}
-}
-@media only screen and (max-width: 930px) {
-    .white {font-size: 36px;}
-    svg {height: 72px;}
-}
-@media only screen and (max-width: 730px) {
-    .white {font-size: 24px;}
-    svg {height: 48px;}
-}
-@media only screen and (max-width: 470px) {
-    .white {font-size: 18px;}
-    svg {height: 36px;}
-}
-div {overflow: hidden; position: relative; }
-body {margin: 0; background-color: #444}
-div#content {margin-left: 2%; margin-right: 2%; margin-bottom: 2%;};
-.ib {font-family: Georgia, Verdana, sans-serif; font-size: 18px; color: white; }
-select.mockbutton, input.mockbutton {padding: 0px;}
-button.mockbutton {padding: 3px; border-radius: 5px; cursor: pointer;}
-select.mockbutton, input.mockbutton, button.mockbutton {border-style: solid; border-color: #ddd; margin-bottom: 10px; display: inline-block;}
-.ib {display: inline-block;}
-#invalid {display:none;}
-#dirs {display:none;}
-ul {list-style-type: none;}
-ul li.dash:before { content: '\2014'; position: absolute; margin-left: -20px; }
-</style>
 </head>
 <body>
 <div class="top">
@@ -77,19 +26,19 @@ ul li.dash:before { content: '\2014'; position: absolute; margin-left: -20px; }
 <li>sunsetminutes: 46&PM :47&PM :48&PM :49&PM :50&PM... </li>
 <li>daylightduration: 9&hours&24&minutes 9&hours&25&minutes 9&hours&26&minutes 9&hours&28&minutes 9&hours&29&minutes... </li>
 </ul>
-When I created the International Version, with the ability to analyze any location in the world, I had to store this data outside of the program. The STEQ file was born! I simply kept the same format I had used in the original program, with each list in order, one after the other.<br>Click here for an example!
+When I created the International Version, with the ability to analyze any location in the world, I had to store this data outside of the program. The STEQ file was born! I simply kept the same format I had used in the original program, with each list in order, one after the other.<br><a href="archive/fortuna.steq">Click here for an example!</a>
 <h3>Why did I do it this way?</h3>
 I wrote the converter in Scratch 2. When exporting a list, Scrach 2 separates each item thereof by a space, so I used the ampersand to replace spaces I wanted to keep, and had the HTML converter create a list by splitting on each space character. 
 The USNO converter outputs its data in standard time all year, so I separated the hours and minutes for sunrise and sunset&mdash;this way, they can be dynamically adjusted in any given year depending on when DST starts and ends.
 <h2>STEQ-JUL</h2>
 <p>Namesake: the month of July, when I created this format alongside updating the Sun Times Equivalence Thing<br>
-This format is exactly the same as above, but it adds "STEQ-JUL" at the beginning of its files. It's a quick-and-dirty way to allow the converter to discern what is and isn't a valid file.
+This format is exactly the same as above, but it adds "STEQ-JUL" at the beginning of its files. It's a quick-and-dirty way to allow the converter to discern what is and isn't a valid file. <a href="archive/reykjavik2.steq">Here's an example.</a></p>
 <h2>STEQ-DYN</h2>
 <p>Namesake: "dynamic"<br>
-While STEQ-JUL stores its times in English-language format, STEQ-DYN replaces this with just numbers. This makes the files smaller in size and much more versatile and easy-to-read.
+While STEQ-JUL stores its times in English-language format, STEQ-DYN replaces this with just numbers. This makes the files smaller in size and much more versatile and easy-to-read. <a href="archive/homeDYN.steq">Here's an example.</a></p>
 <h2>STEQ-NDL</h2>
 <p>Namesake: "no daylight" (as rather than storing the during of daylight within the file, it is generated upon reading)<br>
-This format is the same as STEQ-DYN, but without the daylight duration. Since it is so similar to STEQ-DYN, every version of the Sun Times Equivalence Thing that can read STEQ-NDL files is backwards compatible with STEQ-DYN (except the version the former was introduced, steqintl3b3).</p>
+This format is the same as STEQ-DYN, but without the daylight duration. Since it is so similar to STEQ-DYN, every version of the Sun Times Equivalence Thing that can read STEQ-NDL files is backwards compatible with STEQ-DYN (except the version the former was introduced, steqintl3b3). <a href="homeNDL.steq">Here's an example.</a></p>
 <h2>STEQ-POL</h2>
 <p>Namesake: "polar" (its converter had better support for edge cases that happen at the poles)<br>
 STEQ-POL's converted added support for a few edge cases:
@@ -99,5 +48,6 @@ STEQ-POL's converted added support for a few edge cases:
 </ul>
 These cases only happen in polar locations around the beginning/end of midnight sun/polar night. They're what made STEQ-POL "polar" and so difficult to get working, and the increasing unwieldiness of STEQ-POL and the files in general caused me to abandon both.
 Because the HTML converter uses the same code base as later STEQINTL versions, it does not cover the edge cases that STEQ-POL was meant to, and so generating a STEQ-POL file here may not be as "authentic" as it could have been.
-<a href="archive/tromsoPOL.steq">Click here to see an example of a STEQ-POL file with edge cases.</a>
+<a href="archive/tromsoPOL.steq">Click here to see an example of a STEQ-POL file with edge cases.</a></p>
+<p><a href="converter.html">Return to the generator</a></p>
 </div></body></html>
