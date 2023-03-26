@@ -6,12 +6,12 @@ table { border-collapse: collapse; }
 select, option, span, input, button, select {color: black;}	
 #content {margin-left: 10px;}	
 #loadedmsg {margin-bottom: 0px;}	
-#steqfile {opacity: 0; position: absolute; z-index: -1;}	
-#submit {opacity: 0; position: absolute; z-index: -1;}	
+/*#submit {opacity: 0; position: absolute; z-index: -1;}	*/
 .mockbutton {display: block; background: #ddd; color: #000; font-size: 18px; font-family: Georgia, Verdana, sans-serif; display: inline-block; padding: 5px; border-radius: 3px;}	
 button.mockbutton {cursor: pointer;}	
 h1, h2, h3 {font-family: Verdana, sans-serif; color: white;}	
-a:visited {color: #ddd; text-decoration: none; }	
+strong {font-family: Verdana, sans-serif; color: white;}	
+a:visited {color: #ddd; }	
 a:hover {color: orange; }	
 button {font-size: 18px; font-family: Georgia, Verdana, sans-serif;}	
 h1 {font-size: 60px;}	
@@ -49,4 +49,5 @@ select.mockbutton, input.mockbutton, button.mockbutton {border-style: solid; bor
 #dirs {display:none;}	
 ul {list-style-type: none;}	
 ul li.dash:before { content: '\2014'; position: absolute; margin-left: -20px; }
+ul li.nothing {margin-bottom: 5px ;}
 input[type='number']{ width: 120px; } 

@@ -5,6 +5,10 @@
 <link rel="stylesheet" href="steq.css">
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+#check {display:none;}
+#invalid {display:none;}
+</style>
 </head>
 <body>
 <div class="top">
@@ -17,79 +21,95 @@
 </div>
 <div id="content">
 <p>Thank you for visiting the website of the Sun Times Equivalence Thing! It was one of my past passion projects; I worked on it occasionally from 2018 to 2020, but haven't worked on it since.</p>
-<p>The website allows you to input your location and then allows you to choose any day of the year. It will calculate that day's sunrise and sunset times as well of the duration of daylight, and then find other days in the year that have the same sunrise time, sunset time, or duration of daylight. Click here to view the latest version of the Sun Times Equivalence Thing, or look below to see a version history.</p>
-<p>You will need an STEQ file for versions made prior to July 2019&mdash;<a href="converter.html">get yours here!</a>
-<!--p>Versions from xx and before require a STEQ file to use; versions after generate the data on-the-fly. I used to generate these files myself with data from the USNO, but for the purposes of this archive I created a converter that will allow you to generate your own.</p-->
+<p>The program allows you to input your location and then allows you to choose any day of the year. It will calculate that day's sunrise and sunset times as well of the duration of daylight, and then find other days in the year that have the same sunrise time, sunset time, or duration of daylight.</p>
+<p>Below is the most recent version of the Sun Times Equivalence Thing. You can also <a href="archive/index.html">check out the archive</a>.</p>
+<p>Input your data below to begin.</p>
+<div id="input-data">
+<span class="ib"><label for="name">Place name: </label><input type="text" id="name" class="mockbutton"/></span>
+<span class="ib"><label for="lat">Latitude: </label><input type="number" id="lat" name="lat" min="-90" max="90" class="mockbutton"/></span>
+<span class="ib"><label for="lon">Longitude: </label><input type="number" id="lon" name="lon" min="-180" max="180" class="mockbutton"/></span>
+<span class="ib"><label for="tz">Time zone (winter): </label><input type="number" id="tz" name="tz" min="-12" max="14" class="mockbutton"/></span>
+<span class="ib"><label for="dst">DST rule: </label>
+<select id="dst" size="1" class="mockbutton">
+<option value="no">no</option>
+<option value="us">us</option>
+<option value="eu">eu</option>
+</select></span>
+<br><br>
+<button id="save" class="mockbutton" onclick="validate();">Save</button>
+<p id="invalid" class="error"></p>
+</div>
+<p id="loadedmsg"></p>
+<div id="check">
+<p>Date to check:</p>
+<select id="month" size="1" class="mockbutton">
+<option value="0">January</option>
+<option value="1">February</option>
+<option value="2">March</option>
+<option value="3">April</option>
+<option value="4">May</option>
+<option value="5">June</option>
+<option value="6">July</option>
+<option value="7">August</option>
+<option value="8">September</option>
+<option value="9">October</option>
+<option value="10">November</option>
+<option value="11">December</option>
+</select>
+<select id="date" size="1" class="mockbutton">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select>
+<input type="number" id="year" min="1" max="9999" class="mockbutton"></input>
+<br><br>
+<button id="submit" class="mockbutton" onclick="process();">Submit</button>
+<p id="results"></p>
+</div>
+<script src="archive/gen.js"></script>
+<script src="archive/computeSunrise2.js"></script>
+<script src="archive/dst.js"></script>
+<script src="main.js"></script>
+<noscript><p class="error">The Sun Times Equivalence Thing requires Javascript! Please turn it on to use the website.</p></noscript>
+<h3>How to use</h3>
+<ul>
+<li class="nothing"><strong>Place name</strong>: This can be anything you'd like.</li>
+<li class="nothing"><strong>Latitude and longitude</strong>: Latitude is degrees north or south of the Equator; longitude is degrees east or west of the Prime Meridian. To find your latitude and logitude, look up something like "<a href="https://www.google.com/search?q=nyc+coordinates">NYC coordinates</a>" and paste the result into the corresponding boxes. Note that degrees north or east are postive, while degrees west or south are negative. In this example, the latitude would be <code>40.7128</code>, while the longitude would be <code>-74.0060</code>.</li>
+<li class="nothing"><strong>Time zone (winter)</strong>: This is specified in hours ahead or behind of UTC. Here are some examples in the United States:
 <table>
-<tr><td>May 16, 2020</td>
-<td>
-<a href="archive/steqintl3b6-4.html">steqintl3b6-4</a>
-</td></tr>
-<tr><td>May 15, 2020</td>
-<td>
-<a href="archive/steqintl3b6-3.html">steqintl3b6-3</a><br>
-<a href="archive/steqintl3b6-2.html">steqintl3b6-2</a>
-</td></tr>
-<tr><td>July 21, 2019</td>
-<td>
-<a href="archive/steqintl3b6.html">steqintl3b6</a>
-</td></tr>
-<tr><td>July 20, 2019</td>
-<td>
-<a href="archive/steqintl3b5.html">steqintl3b5</a>
-</td></tr>
-<tr><td>June 14, 2019</td>
-<td>
-<a href="archive/steqintl3b5june.html">steqintl3b5</a>
-</td></tr>
-<tr><td>June 5, 2019</td>
-<td>
-<a href="archive/steqintl3b5bknjune.html">steqintl3b5 (broken)</a>
-</td></tr>
-</td></tr>
-<tr><td>September 15, 2018</td>
-<td>
-<a href="archive/steqintl3b5bknsep.html">steqintl3b5 (broken)</a>
-</td></tr>
-</td></tr>
-<tr><td>August 23, 2018</td>
-<td>
-<a href="archive/steqintl3b4aug.html">steqintl3b4 (August)</a>
-</td></tr>
-<tr><td>July 29, 2018</td>
-<td>
-<a href="archive/steqintl3b4.html">steqintl3b4</a>
-</td></tr>
-<tr><td>July 28, 2018</td>
-<td>
-<a href="archive/steqintl3b3.html">steqintl3b3</a><br>
-<a href="archive/steqintl3b2.html">steqintl3b2</a>
-</td></tr>
-<tr><td>July 23, 2018</td>
-<td>
-<a href="archive/steqlog.html">STEQ Logo 3 prgm</a><br>
-<a href="archive/steqintl3b.html">steqintl3b</a>
-</td></tr>
-<tr><td>July 5, 2018</td>
-<td>
-<a href="archive/steqintl3a.html">steqintl3a</a>
-</td></tr>
-<tr><td>July 4, 2018</td>
-<td>
-<a href="archive/steqintl3.html">steqintl3</a>
-</td></tr>
-<tr><td>July 3, 2018</td>
-<td>
-<a href="archive/steqintl2.html">steqintl2</a>
-</td></tr>
-<tr><td>June 13, 2018</td>
-<td>
-<a href="archive/steqintl.html">steqintl</a>
-</td></tr>
-<tr><td class="end">February 3, 2018</td>
-<td class="end">
-<a href="archive/sun3.html">sun3</a><br>
-<a href="archive/sun2.html">sun2</a><br>
-<a href="archive/sun.html">sun</a><br>
+<tr><td>New York:</td><td>-5</td></tr>
+<tr><td>Chicago:</td><td>-6</td></tr>
+<tr><td>Denver:</td><td>-7</td></tr>
+<tr><td>Los Angeles:</td><td>-8</td></tr>
 </table>
+</li>
+<li class="nothing"><strong>DST rule</strong>: American DST rules (&ldquo;us&rdquo;), European rules (&ldquo;eu&rdquo;), or no DST (&ldquo;no&rdquo;).</li>
 </div></body></html>
