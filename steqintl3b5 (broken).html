@@ -164,7 +164,7 @@ var filetype;
 	      var contents = e.target.result;
         loaded = contents;
 		loaded = loaded.split(" ")
-		if (!["STEQ-DYN", "STEQ-NDL"].includes(loaded[0])) {
+		if (!["STEQ-DYN", "STEQ-NDL", "STEQ-POL"].includes(loaded[0])) {
 		document.getElementById('invalid').style.display = 'block';
 		document.getElementById('loadedmsg').style.display = 'none';
 		} else {
@@ -196,6 +196,101 @@ document.getElementById("yearinput").innerHTML = "<input type=\"number\" id=\"ye
 function process() {
 sunrises = loaded.slice(1, 367);
 sunsets = loaded.slice(367, 733);
+//daylight was here
+var month;
+var day;
+var year;
+var oForm = document.forms["0"];
+month = oForm.elements["month"].value;
+day = oForm.elements["date"].value;
+year = oForm.elements["year"].value;
+var origmonth = month;
+var ly;
+var maxdays;
+if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+maxdays = ["31", "29", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
+ly = 1;
+} else {
+maxdays = ["31", "28", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
+ly = 0;
+};
+if (parseInt(day) > parseInt(maxdays[month]) || isNaN(year)|| year < 0 || year > 9999 || year % 1 !== 0) {
+document.getElementById("results").innerHTML = "<p class=\"error\">Invalid Date!</p>";
+} else {
+maxdays = ["31", "29", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
+//convert to numbers
+//this is gonna mess up when we do STEQ-POL!! and dst! we need to account for midnights and rollovers
+			for (i=0; i < sunrises.length; i++) {
+			strtemp = sunrises[i];
+			strtemp = parseInt(strtemp);
+			if (strtemp != "NaN") {
+			sunsets[i] = strtemp;
+			};
+			};
+for (i=0; i < sunsets.length; i++) {
+			strtemp = sunsets[i];
+			strtemp = parseInt(strtemp);
+			if (strtemp != "NaN") {
+			sunsets[i] = strtemp;
+			};
+			};
+//dst
+daylightduration = ["00:00", "00:00", "00:00"];
+//dstrule = loaded[733]//1099 in STEQ-DYN
+if (dstrule === "us\n") {
+var d = new Date("3/1/"+year);
+var mar1 = d.getDay();
+var dstday = 1;
+for (; mar1 != 0; dstday++) {
+mar1++;
+if (mar1 > 6) {
+mar1 = 0;
+};
+};
+};
+var begindst = 60 + dstday + 7;
+var enddst = begindst + 238;
+//adding
+for (i = begindst; i < enddst; i++) {
+if (parseInt(sunrises[i-1]) != "NaN") {
+sunrises[i-1] = sunrises[i-1] + 100;
+};
+if (parseInt(sunsets[i-1]) != "NaN") {
+sunsets[i-1] = sunsets[i-1] + 100;
+};
+};
+if (dstrule === "eu\n") {
+var d = new Date("3/25/"+year);
+var mar1 = d.getDay();
+var dstday = 1;
+for (; mar1 != 0; dstday++) {
+mar1++;
+if (mar1 > 6) {
+mar1 = 0;
+};
+};
+var begindst = 84 + dstday;
+var d = new Date("10/25/"+year);
+var mar1 = d.getDay();
+var dstday = 1;
+for (; mar1 != 0; dstday++) {
+mar1++;
+if (mar1 > 6) {
+mar1 = 0;
+};
+};
+var enddst = 298 + dstday;
+//adding
+for (i = begindst; i < enddst; i++) {
+if (parseInt(sunrises[i-1]) != "NaN") {
+sunrises[i-1] = sunrises[i-1] + 100;
+};
+if (parseInt(sunsets[i-1]) != "NaN") {
+sunsets[i-1] = sunsets[i-1] + 100;
+};
+};
+};
+//end dst
 //make daylight
 var sunrisemin;
 var sunsetmin;
@@ -225,90 +320,6 @@ daylightduration = loaded.slice(733, 1099);
 dstrule = loaded[1099];
 };
 //
-var month;
-var day;
-var year;
-var oForm = document.forms["0"];
-month = oForm.elements["month"].value;
-day = oForm.elements["date"].value;
-year = oForm.elements["year"].value;
-var origmonth = month;
-var ly;
-var maxdays;
-if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
-maxdays = ["31", "29", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
-ly = 1;
-} else {
-maxdays = ["31", "28", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
-ly = 0;
-};
-if (parseInt(day) > parseInt(maxdays[month]) || isNaN(year)|| year < 0 || year > 9999) {
-document.getElementById("results").innerHTML = "<p class=\"error\">Invalid Date!</p>";
-} else {
-maxdays = ["31", "29", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
-//convert to numbers
-//this is gonna mess up when we do STEQ-POL!! and dst! we need to account for midnights and rollovers
-			for (i=0; i < sunrises.length; i++) {
-			strtemp = sunrises[i]
-			if (strtemp !== "****" && strtemp !== "----") {
-				strtemp = parseInt(strtemp)
-				};
-			sunrises[i] = strtemp
-			};
-for (i=0; i < sunsets.length; i++) {
-			strtemp = sunsets[i]
-			if (strtemp !== "****" && strtemp !== "----") {
-				strtemp = parseInt(strtemp)
-				};
-			sunsets[i] = strtemp
-			};
-//dst
-//dstrule = loaded[733]//1099 in STEQ-DYN
-if (dstrule === "us\n") {
-var d = new Date("3/1/"+year);
-var mar1 = d.getDay();
-var dstday = 1;
-for (; mar1 != 0; dstday++) {
-mar1++;
-if (mar1 > 6) {
-mar1 = 0;
-};
-};
-var begindst = 60 + dstday + 7;
-var enddst = begindst + 238;
-//adding
-for (i = begindst; i < enddst; i++) {
-sunrises[i-1] = sunrises[i-1] + 100;
-sunsets[i-1] = sunsets[i-1] + 100;
-};
-};
-if (dstrule === "eu\n") {
-var d = new Date("3/25/"+year);
-var mar1 = d.getDay();
-var dstday = 1;
-for (; mar1 != 0; dstday++) {
-mar1++;
-if (mar1 > 6) {
-mar1 = 0;
-};
-};
-var begindst = 84 + dstday;
-var d = new Date("10/25/"+year);
-var mar1 = d.getDay();
-var dstday = 1;
-for (; mar1 != 0; dstday++) {
-mar1++;
-if (mar1 > 6) {
-mar1 = 0;
-};
-};
-var enddst = 298 + dstday;
-//adding
-for (i = begindst; i < enddst; i++) {
-sunrises[i-1] = sunrises[i-1] + 100;
-sunsets[i-1] = sunsets[i-1] + 100;
-};
-};
 var checkdate = 0;
 for (i=0; month != 0; i++) {
 checkdate = checkdate + parseInt(maxdays[i]);

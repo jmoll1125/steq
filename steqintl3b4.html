@@ -7,21 +7,17 @@ July 23/24 - Compatibility, really (no freeze when year is nan, noscript support
 Transition to design, with mockbutton for uploader (changed submit too)
 July 28 - STEQ-NDL finished (yes, no daylight)
 July 29 - Backwards compatability with STEQ-DYN!
-August 23 - ?
-May 30/June 5 - STEQINTL header, no crash when year is frac 
 Original Version February 3, 2018 -->
-<html lang="en-US">
+<html lang="en">
 <head>
 <title>Sun Times Equivalence Thing</title>
-<meta charset="UTF-8">
+<meta charset=UTF-8>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="desription" content="Finds the sunrise, sunset, and duration of daylight (and other days that match these values) for any location in the world.">
 <meta name="theme-color" content="#ffde72">
-<link rel="shortcut icon" href="favicon.ico">
+<link rel="icon" href="favicon.ico">
 <style>
 p, a, em, u, td, ol, li, pre, select, option, span, input {font-family: Georgia, Verdana, sans-serif; font-size: 18px; color: white;}
-select, option, span, input, button {color: black;}
-select {min-height: 27px}
+select, option, span, input, button, select {color: black;}
 #content {margin-left: 10px; margin-right: 10px;}
 #loadedmsg {margin-bottom: 0px;}
 #steqfile {opacity: 0; position: absolute; z-index: -1;}
@@ -36,10 +32,9 @@ h1 {font-size: 60px;}
 .pubtime {font-family: Georgia; font-size: 12pt; font-style: italic; }
 .error {color: red; }
 .top {background-color: #44bbff; top: 0; left: 0;}
-.white, .white-s {color: white; font-size: 60px; font-family: Verdana, sans-serif; font-weight: bold; position: absolute; top: 50%; transform: translate(0, -50%); margin: 0px;}
+.whitetext {color: white;}
+.white {color: white; font-size: 60px; font-family: Verdana, sans-serif; font-weight: bold; position: absolute; top: 50%; transform: translate(0, -50%); margin: 0px;}
 svg {float: left; height: 120px; }
-.white {display: inline-block}
-.white-s {display: none}
 @media only screen and (max-width: 1130px) {
 .white {font-size: 48px; }
 svg {height: 96px;}
@@ -56,18 +51,13 @@ svg {height: 96px;}
     .white {font-size: 18px;}
     svg {height: 36px;}
 }
-@media only screen and (max-width: 330px) {
-    .white-s {display: inline-block; font-size: 18px;}
-    .white {display: none}
-    svg {height: 36px;}
-}
 div {overflow: hidden; position: relative; }
 body {margin: 0; background-color: #444}
-#check {display:none;}
-#invalid {display:none;}
 </style>
 <!-- if no js... -->
 <noscript><style>
+#check {display:none;}
+#invalid {display:none;}
 #steqfile {display:none;}
 #browse {display:none;}
 </style></noscript>
@@ -80,18 +70,17 @@ body {margin: 0; background-color: #444}
 <line x1="60" y1="60" x2="90" y2="48" style="stroke:rgb(0,0,0);stroke-width:2" />
 </svg>
 <span class="white">Sun Times Equivalence Thing</span>
-<span class="white-s">STEQINTL</span>
 </div>
 <div id="content">
-<p>It&#8217;s difficult to explain.</p>
+<p>It's difficult to explain.</p>
 <p>This is the international version, which means you can upload any STEQ file (contaning all the data) and use that in the program!</p>
-<p>You&#8217;ll need an STEQ file to continue.</p>
+<p>You'll need an STEQ file to continue.</p>
 <label for="steqfile" class="mockbutton" id="browse">Browse...</label>
 <input id="steqfile" type="file" accept=".steq"/>
 <p id="loadedmsg"></p>
 <div id="check">
 <p>Date to check:</p>
-<form onkeypress="return event.keyCode != 13">
+<form>
 <select name="month" size="1">
 <option value="0">January</option>
 <option value="1">February</option>
@@ -250,16 +239,12 @@ maxdays = ["31", "29", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31
 //this is gonna mess up when we do STEQ-POL!! and dst! we need to account for midnights and rollovers
 			for (i=0; i < sunrises.length; i++) {
 			strtemp = sunrises[i]
-			if (strtemp !== "****" && strtemp !== "----") {
-				strtemp = parseInt(strtemp)
-				};
+			strtemp = parseInt(strtemp)
 			sunrises[i] = strtemp
 			};
 for (i=0; i < sunsets.length; i++) {
 			strtemp = sunsets[i]
-			if (strtemp !== "****" && strtemp !== "----") {
-				strtemp = parseInt(strtemp)
-				};
+			strtemp = parseInt(strtemp)
 			sunsets[i] = strtemp
 			};
 //dst

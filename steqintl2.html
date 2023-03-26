@@ -2,96 +2,33 @@
 <!-- Sun Times Equivalence Thing - International Version (June 13, 2018)
 July 3 - rejects invalid files (hopefully), fixed DST bug, no more esoteric data
 More miscellaneous stuff (html5, css cleanup, no longer accepts txts)
-July 5 - STEQ-DYN finished. 
-July 23/24 - Compatibility, really (no freeze when year is nan, noscript support)
-Transition to design, with mockbutton for uploader (changed submit too)
-July 28 - STEQ-NDL finished (yes, no daylight)
-July 29 - Backwards compatability with STEQ-DYN!
-August 23 - ?
-May 30/June 5 - STEQINTL header, no crash when year is frac 
 Original Version February 3, 2018 -->
-<html lang="en-US">
+<html>
 <head>
 <title>Sun Times Equivalence Thing</title>
-<meta charset="UTF-8">
+<meta charset=UTF-8>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="desription" content="Finds the sunrise, sunset, and duration of daylight (and other days that match these values) for any location in the world.">
-<meta name="theme-color" content="#ffde72">
-<link rel="shortcut icon" href="favicon.ico">
-<style>
-p, a, em, u, td, ol, li, pre, select, option, span, input {font-family: Georgia, Verdana, sans-serif; font-size: 18px; color: white;}
-select, option, span, input, button {color: black;}
-select {min-height: 27px}
-#content {margin-left: 10px; margin-right: 10px;}
-#loadedmsg {margin-bottom: 0px;}
-#steqfile {opacity: 0; position: absolute; z-index: -1;}
-#submit {opacity: 0; position: absolute; z-index: -1;}
-.mockbutton {display: block; background: #ddd; color: #000; cursor: pointer; font-size: 18px; font-family: Georgia, Verdana, sans-serif; display: inline-block; padding: 5px; border-radius: 3px;}
-label {cursor: pointer;}
+<style type="text/css">
+p, a, em, b, u, td, ol, li, pre, select, option, span, input {font-family: Georgia, Verdana, sans-serif; font-size: 18px;}
 h1, h2, h3 {font-family: Verdana, sans-serif;}
 a:visited {color: blue; text-decoration: none; }
 a:hover {color: orange; }
 button {font-size: 18px; font-family: Georgia, Verdana, sans-serif;}
-h1 {font-size: 60px;}
+h1 {font-size: 32px;}
 .pubtime {font-family: Georgia; font-size: 12pt; font-style: italic; }
 .error {color: red; }
-.top {background-color: #44bbff; top: 0; left: 0;}
-.white, .white-s {color: white; font-size: 60px; font-family: Verdana, sans-serif; font-weight: bold; position: absolute; top: 50%; transform: translate(0, -50%); margin: 0px;}
-svg {float: left; height: 120px; }
-.white {display: inline-block}
-.white-s {display: none}
-@media only screen and (max-width: 1130px) {
-.white {font-size: 48px; }
-svg {height: 96px;}
-}
-@media only screen and (max-width: 930px) {
-    .white {font-size: 36px;}
-    svg {height: 72px;}
-}
-@media only screen and (max-width: 730px) {
-    .white {font-size: 24px;}
-    svg {height: 48px;}
-}
-@media only screen and (max-width: 470px) {
-    .white {font-size: 18px;}
-    svg {height: 36px;}
-}
-@media only screen and (max-width: 330px) {
-    .white-s {display: inline-block; font-size: 18px;}
-    .white {display: none}
-    svg {height: 36px;}
-}
-div {overflow: hidden; position: relative; }
-body {margin: 0; background-color: #444}
-#check {display:none;}
-#invalid {display:none;}
 </style>
-<!-- if no js... -->
-<noscript><style>
-#steqfile {display:none;}
-#browse {display:none;}
-</style></noscript>
 </head>
 <body>
-<div class="top">
-<svg viewBox = "0 0 120 120">
-<circle cx="60" cy="60" r="56" fill="#ffde72" stroke="black" stroke-width="2"/>
-<line x1="60" y1="60" x2="105" y2="66" style="stroke:rgb(0,0,0);stroke-width:2" />
-<line x1="60" y1="60" x2="90" y2="48" style="stroke:rgb(0,0,0);stroke-width:2" />
-</svg>
-<span class="white">Sun Times Equivalence Thing</span>
-<span class="white-s">STEQINTL</span>
-</div>
-<div id="content">
-<p>It&#8217;s difficult to explain.</p>
+<h1>Sun Times Equivalence Thing</h1>
+<p>It's difficult to explain.</p>
 <p>This is the international version, which means you can upload any STEQ file (contaning all the data) and use that in the program!</p>
-<p>You&#8217;ll need an STEQ file to continue.</p>
-<label for="steqfile" class="mockbutton" id="browse">Browse...</label>
+<p>You'll need an STEQ file to continue.</p>
 <input id="steqfile" type="file" accept=".steq"/>
-<p id="loadedmsg"></p>
-<div id="check">
-<p>Date to check:</p>
-<form onkeypress="return event.keyCode != 13">
+<p id="loadedmsg"> </p>
+<span id="check">
+<p>Date to check: 
+<form>
 <select name="month" size="1">
 <option value="0">January</option>
 <option value="1">February</option>
@@ -139,21 +76,21 @@ body {margin: 0; background-color: #444}
 <option value="30">30</option>
 <option value="31">31</option>
 </select>
-<span id="yearinput"></span>
-<br><br><label for="submit" class="mockbutton" onclick="process();">Submit</label>
-<input id="submit" type="button" value="a" onclick="process();" />
+<span id="yearinput"></span></p>
+<input id="submit" type="button" value="Submit" onclick="process();" />
 </form>
 <p id="results"></p>
-</div>
-<p id="invalid" class="error">Not a valid STEQ file!</p>
-<script>
+</span>
+<p id="invalid" class="error" >Not a valid STEQ file!</p>
+<script type="text/javascript">
 document.getElementById('invalid').style.display = 'none';
 document.getElementById('check').style.display = 'none';
-var sunrises;
-var sunsets;
+var sunrisehours;
+var sunriseminutes;
+var sunsethours;
+var sunsetminutes;
 var daylightduration;
 var loaded;
-var filetype;
   function readSingleFile(evt) {
     //Retrieve the first (and only!) File from the FileList object
     var f = evt.target.files[0]; 
@@ -164,16 +101,14 @@ var filetype;
 	      var contents = e.target.result;
         loaded = contents;
 		loaded = loaded.split(" ")
-		if (!["STEQ-DYN", "STEQ-NDL"].includes(loaded[0])) {
+		if (loaded[0] != "STEQ-JUL") {
 		document.getElementById('invalid').style.display = 'block';
 		document.getElementById('loadedmsg').style.display = 'none';
 		} else {
 		document.getElementById('check').style.display = 'block';
 		document.getElementById('steqfile').style.display = 'none';
-		document.getElementById('browse').style.display = 'none';
 		document.getElementById('invalid').style.display = 'none';
 		document.getElementById('loadedmsg').style.display = 'block';
-		filetype = loaded[0];
 		loaded.splice(0, 1);
 		};
 		var strtemp;
@@ -182,6 +117,13 @@ var filetype;
 			strtemp = strtemp.replace(/&/g, " ")
 			loaded[i] = strtemp
 			};
+			loaded.splice(367, 1);
+			loaded.splice(1099, 1); //bodge to remove ""s
+			sunrisehours = loaded.slice(1, 367);
+			sunriseminutes = loaded.slice(367, 733);
+			sunsethours = loaded.slice(733, 1099);
+			sunsetminutes = loaded.slice(1099, 1465);
+			daylightduration = loaded.slice(1465, 1831);
 		document.getElementById('loadedmsg').innerHTML = "<b>"+loaded[0]+"</b> file loaded."
       }
       r.readAsText(f);
@@ -189,42 +131,18 @@ var filetype;
       alert("Failed to load file");
     }
   }
-  document.getElementById('steqfile').addEventListener('change', readSingleFile, false); 
+
+  document.getElementById('steqfile').addEventListener('change', readSingleFile, false);
+  
 //
-document.getElementById("yearinput").innerHTML = "<input type=\"number\" id=\"year\" name=\"year\" min=\"1\" max=\"9999\" value=\""+(new Date().getFullYear())+"\">"
+document.getElementById("yearinput").innerHTML = "<input type=\"number\" id=\"year\" name=\"year\" value=\""+(new Date().getFullYear())+"\">"
 //this is where the stuff was defined
 function process() {
-sunrises = loaded.slice(1, 367);
-sunsets = loaded.slice(367, 733);
-//make daylight
-var sunrisemin;
-var sunsetmin;
-var daylightmin;
-var zstring;
-var dstrule;
-if (filetype == "STEQ-NDL") {
-daylightduration = [];
-for (i=0; i<sunrises.length; i++) {
-zstring = "";
-sunrisemin = parseInt(sunrises[i].substring(0,2))*60 + parseInt(sunrises[i].substring(2,4));
-sunsetmin = parseInt(sunsets[i].substring(0,2))*60 + parseInt(sunsets[i].substring(2,4));
-daylightmin = sunsetmin - sunrisemin;
-if (daylightmin % 60 < 10) {
-zstring = "0";
-};
-daylightmin = Math.floor(daylightmin / 60) + ":" + zstring + (daylightmin % 60);
-if (daylightmin.length < 5) {
-daylightmin = "0" + daylightmin;
-};
-daylightduration.push(daylightmin);
-};
-dstrule = loaded[733]
-};
-if (filetype === "STEQ-DYN") {
-daylightduration = loaded.slice(733, 1099);
-dstrule = loaded[1099];
-};
-//
+sunrisehours = loaded.slice(1, 367);
+sunriseminutes = loaded.slice(367, 733);
+sunsethours = loaded.slice(733, 1099);
+sunsetminutes = loaded.slice(1099, 1465);
+daylightduration = loaded.slice(1465, 1831);
 var month;
 var day;
 var year;
@@ -242,28 +160,23 @@ ly = 1;
 maxdays = ["31", "28", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
 ly = 0;
 };
-if (parseInt(day) > parseInt(maxdays[month]) || isNaN(year)|| year < 0 || year > 9999) {
+if (parseInt(day) > parseInt(maxdays[month])) {
 document.getElementById("results").innerHTML = "<p class=\"error\">Invalid Date!</p>";
 } else {
 maxdays = ["31", "29", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
 //convert to numbers
-//this is gonna mess up when we do STEQ-POL!! and dst! we need to account for midnights and rollovers
-			for (i=0; i < sunrises.length; i++) {
-			strtemp = sunrises[i]
-			if (strtemp !== "****" && strtemp !== "----") {
-				strtemp = parseInt(strtemp)
-				};
-			sunrises[i] = strtemp
+		for (i=0; i < sunrisehours.length; i++) {
+			strtemp = sunrisehours[i]
+			strtemp = parseInt(strtemp)
+			sunrisehours[i] = strtemp
 			};
-for (i=0; i < sunsets.length; i++) {
-			strtemp = sunsets[i]
-			if (strtemp !== "****" && strtemp !== "----") {
-				strtemp = parseInt(strtemp)
-				};
-			sunsets[i] = strtemp
+for (i=0; i < sunsethours.length; i++) {
+			strtemp = sunsethours[i]
+			strtemp = parseInt(strtemp)
+			sunsethours[i] = strtemp
 			};
 //dst
-//dstrule = loaded[733]//1099 in STEQ-DYN
+dstrule = loaded[1831]
 if (dstrule === "us\n") {
 var d = new Date("3/1/"+year);
 var mar1 = d.getDay();
@@ -277,9 +190,10 @@ mar1 = 0;
 var begindst = 60 + dstday + 7;
 var enddst = begindst + 238;
 //adding
+
 for (i = begindst; i < enddst; i++) {
-sunrises[i-1] = sunrises[i-1] + 100;
-sunsets[i-1] = sunsets[i-1] + 100;
+sunrisehours[i-1]++;
+sunsethours[i-1]++;
 };
 };
 if (dstrule === "eu\n") {
@@ -305,8 +219,8 @@ mar1 = 0;
 var enddst = 298 + dstday;
 //adding
 for (i = begindst; i < enddst; i++) {
-sunrises[i-1] = sunrises[i-1] + 100;
-sunsets[i-1] = sunsets[i-1] + 100;
+sunrisehours[i-1]++;
+sunsethours[i-1]++;
 };
 };
 var checkdate = 0;
@@ -316,35 +230,47 @@ month = month - 1
 };
 checkdate = checkdate + parseInt(day);
 checkdate = checkdate - 1;
-var sunrise = sunrises[checkdate];
-var sunset = sunsets[checkdate];
-var daylight = daylightduration[checkdate];
+var sunrisehour = sunrisehours[checkdate];
+var sunriseminute = sunriseminutes[checkdate];
+var sunsethour = sunsethours[checkdate];
+var sunsetminute = sunsetminutes[checkdate];
+var daylight = daylightduration[checkdate]
+sunrisehour = sunrisehour.toString();
+sunsethour = sunsethour.toString();
+sunrise = sunrisehour + sunriseminute;
+sunset = sunsethour + sunsetminute;
 months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 //
 //SUNRISE OUTPUT
 //
 var sunriseoccurs = [];
-for (i=0; i <= sunrises.length; i++) {
-if (sunrise == sunrises[i]) {
+var sunriseoccurs2 = [];
+for (i=0; i <= sunriseminutes.length; i++) {
+if (sunriseminute == sunriseminutes[i]) {
 sunriseoccurs.push(i);
 };
 };
-var datetwice = sunriseoccurs.indexOf(checkdate);
-if (datetwice != -1) {
-sunriseoccurs.splice(datetwice, 1);
+for (i=0; i <= sunriseminutes.length; i++) {
+if (sunrisehour == sunrisehours[sunriseoccurs[i]]) {
+sunriseoccurs2.push(sunriseoccurs[i]);
 };
-var sunrisecommas = sunriseoccurs.length - 1;
+};
+var datetwice = sunriseoccurs2.indexOf(checkdate);
+if (datetwice != -1) {
+sunriseoccurs2.splice(datetwice, 1);
+};
+var sunrisecommas = sunriseoccurs2.length - 1;
 var sunriseoutputstr = "";
 var outDay;
 var outMonth;
 var onDate;
-if (sunriseoccurs.length == 0) {
+if (sunriseoccurs2.length == 0) {
 sunriseoutputstr = "no other date!"
 } else {
-for (i=0; i < sunriseoccurs.length; i++) {
+for (i=0; i < sunriseoccurs2.length; i++) {
 outMonth = 0;
 outDay = 0;
-onDate = sunriseoccurs[i]+1;
+onDate = sunriseoccurs2[i]+1;
 for (j=0; onDate > parseInt(maxdays[outMonth]); j++) {
 onDate = onDate - parseInt(maxdays[j]);
 outMonth = outMonth + 1;
@@ -358,24 +284,30 @@ sunriseoutputstr = sunriseoutputstr + outMonth + " " + outDay + ", ";
 //SUNSET OUTPUT
 //
 var sunsetoccurs = [];
-for (i=0; i <= sunsets.length; i++) {
-if (sunset == sunsets[i]) {
+var sunsetoccurs2 = [];
+for (i=0; i <= sunsetminutes.length; i++) {
+if (sunsetminute == sunsetminutes[i]) {
 sunsetoccurs.push(i);
 };
 };
-datetwice = sunsetoccurs.indexOf(checkdate);
+for (i=0; i <= sunsetminutes.length; i++) {
+if (sunsethour == sunsethours[sunsetoccurs[i]]) {
+sunsetoccurs2.push(sunsetoccurs[i]);
+};
+};
+datetwice = sunsetoccurs2.indexOf(checkdate);
 if (datetwice != -1) {
-sunsetoccurs.splice(datetwice, 1);
+sunsetoccurs2.splice(datetwice, 1);
 }
-var sunsetcommas = sunsetoccurs.length - 1;
+var sunsetcommas = sunsetoccurs2.length - 1;
 sunsetoutputstr = "";
-if (sunsetoccurs.length == 0) {
+if (sunsetoccurs2.length == 0) {
 sunsetoutputstr = "no other date!"
 } else {
-for (i=0; i < sunsetoccurs.length; i++) {
+for (i=0; i < sunsetoccurs2.length; i++) {
 outMonth = 0;
 outDay = 0;
-onDate = sunsetoccurs[i] + 1;
+onDate = sunsetoccurs2[i] + 1;
 for (j=0; onDate > parseInt(maxdays[outMonth]); j++) {
 onDate = onDate - parseInt(maxdays[j]);
 outMonth = outMonth + 1;
@@ -388,6 +320,7 @@ sunsetoutputstr = sunsetoutputstr + outMonth + " " + outDay + ", ";
 //
 //DAYLIGHT OUTPUT
 //
+var daylightoccurs = [];
 var daylightoccurs = [];
 for (i=0; i <= daylightduration.length; i++) {
 if (daylight == daylightduration[i]) {
@@ -467,46 +400,8 @@ daylightpretty = daylightpretty + " has"
 } else {
 daylightpretty = daylightpretty + " have"
 };
-//locales for am/pm? we need to account for 0000, and rollovers.
-var ampm = " AM";
-if (sunrise > 1159) {
-sunrise = sunrise - 1200;
-ampm = " PM";
-};
-if (sunrise < 100) {
-sunrise = sunrise + 1200;
-};
-sunrise = sunrise.toString();
-if (sunrise.length == 3) {
-sunrise = sunrise.slice(0, 1) + ":" + sunrise.slice(1, 4);
-} else {
-sunrise = sunrise.slice(0, 2) + ":" + sunrise.slice(2, 4);
-};
-sunrise = sunrise + ampm
-//sunset
-ampm = " AM";
-if (sunset > 1159) {
-sunset = sunset - 1200;
-ampm = " PM";
-};
-if (sunset < 100) {
-sunset = sunset + 1200;
-};
-sunset = sunset.toString();
-if (sunset.length == 3) {
-sunset = sunset.slice(0, 1) + ":" + sunset.slice(1, 4);
-} else {
-sunset = sunset.slice(0, 2) + ":" + sunset.slice(2, 4);
-};
-sunset = sunset + ampm
-//daylight
-daylight = daylight.slice(0, 2) + " hours " + daylight.slice(3, 5) + " minutes"
-if (daylight.charAt(0) == 0) {
-daylight = daylight.slice(1, daylight.length)
-};
 document.getElementById("results").innerHTML = "On "+months[origmonth]+" "+day+", the sun rises at "+sunrise+" and sets at "+sunset+".<br><br>"+months[origmonth]+" "+day+" has "+daylight+" of daylight.<br><br>The sun also rises at "+sunrise+" on "+sunrisepretty+"<br><br>The sun also sets at "+sunset+" on "+sunsetpretty+"<br><br>"+daylightpretty+" the same duration of daylight.";
 };
 };
 </script>
-<noscript><p class="error">The Sun Times Equivalence Thing requires Javascript! Please turn it on to use the website.</p></noscript>
-</div></body></html>
+</body></html>
