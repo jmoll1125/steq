@@ -16,7 +16,7 @@
 <span class="white">File formats</span>
 </div>
 <div id="content">
-<p>The original data source for the Sun Times Equivalence Thing was the <a href="https://aa.usno.navy.mil/data/RS_OneDay">US Naval Observatory</a>. I wrote various programs in Scratch 2 to turn the USNO's data tables into STEQ files. When I moved away from the STEQ file, I switched to using the <a href="https://gist.github.com/Tafkas/4742250">computeSunrise script</a> as a data source.</p>
+<p>The original data source for the Sun Times Equivalence Thing was the <a href="https://aa.usno.navy.mil/data/RS_OneYear">US Naval Observatory</a>. I wrote various programs in Scratch 2 to turn the USNO's data tables into STEQ files. When I moved away from the STEQ file, I switched to using the <a href="https://gist.github.com/Tafkas/4742250">computeSunrise script</a> as a data source.</p>
 <h2>(no file format)</h2>
 <p>The original version of the Sun Times Equivalence Thing could only use one location: my hometown. Its data was hard-coded in, and it was stored in five lists:<br>
 <ul>
@@ -28,8 +28,9 @@
 </ul>
 When I created the International Version, with the ability to analyze any location in the world, I had to store this data outside of the program. The STEQ file was born! I simply kept the same format I had used in the original program, with each list in order, one after the other.<br><a href="archive/fortuna.steq">Click here for an example!</a>
 <h3>Why did I do it this way?</h3>
-I wrote the converter in Scratch 2. When exporting a list, Scrach 2 separates each item thereof by a space, so I used the ampersand to replace spaces I wanted to keep, and had the HTML converter create a list by splitting on each space character. 
+I used <a href="https://aa.usno.navy.mil/data/Dur_OneYear">another USNO page</a> to calculate the daylight duration. I decided to store the format exactly as it would be outputted&mdash;easier at the time, but much more complicated in hindsight.
 The USNO converter outputs its data in standard time all year, so I separated the hours and minutes for sunrise and sunset&mdash;this way, they can be dynamically adjusted in any given year depending on when DST starts and ends.
+The reason there are so many ampersands is because I wrote the converter in Scratch 2. When exporting a list, Scratch 2 separates each item thereof by a space, so I kept the space as an item separator and used ampersands to replace spaces I wanted to keep within items.
 <h2>STEQ-JUL</h2>
 <p>Namesake: the month of July, when I created this format alongside updating the Sun Times Equivalence Thing<br>
 This format is exactly the same as above, but it adds "STEQ-JUL" at the beginning of its files. It's a quick-and-dirty way to allow the converter to discern what is and isn't a valid file. <a href="archive/reykjavik2.steq">Here's an example.</a></p>
@@ -41,7 +42,7 @@ While STEQ-JUL stores its times in English-language format, STEQ-DYN replaces th
 This format is the same as STEQ-DYN, but without the daylight duration. Since it is so similar to STEQ-DYN, every version of the Sun Times Equivalence Thing that can read STEQ-NDL files is backwards compatible with STEQ-DYN (except the version the former was introduced, steqintl3b3). <a href="archive/homeNDL.steq">Here's an example.</a></p>
 <h2>STEQ-POL</h2>
 <p>Namesake: "polar" (its converter had better support for edge cases that happen at the poles)<br>
-STEQ-POL's converted added support for a few edge cases:
+STEQ-POL's converter added support for a few edge cases:
 <ul>
 <li class="dash">the sun rises, sets, and then rises twice in the same day (or vice versa). If there are two sunrises or sunsets, they are placed in the same space but separated by the letter d, like this: 0019d2356.</li>
 <li class="dash">the sun rises but does not set (or vice versa). This is represented with "NULL" in place of where the sunrise or sunset would go.</li>
