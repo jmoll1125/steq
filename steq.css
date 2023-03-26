@@ -16,7 +16,7 @@ a:hover {color: orange; }
 button {font-size: 18px; font-family: Georgia, Verdana, sans-serif;}	
 h1 {font-size: 60px;}	
 .pubtime {font-family: Georgia; font-size: 12pt; font-style: italic; }	
-.error {color: red; }	
+.error {color: rgb(232, 140, 140);}	
 .top {background-color: #44bbff; top: 0; left: 0;}	
 .whitetext {color: white;}	
 .white {color: white; font-size: 60px; font-family: Verdana, sans-serif; font-weight: bold; position: absolute; top: 50%; transform: translate(0, -50%); margin: 0px;}	
