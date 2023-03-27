@@ -200,7 +200,7 @@ return file;
 function display(output) {
 document.getElementById('dirs').style.display = 'block';
 document.getElementById('invalid').style.display = 'none';
-document.getElementById("disp").innerHTML = output;
+document.getElementById("disp").innerHTML = "<code>"+output+"</code>";
 if (polarFlag === 1) {
 document.getElementById("invalid").style.display = "block";
 document.getElementById("invalid").innerHTML = "Your location has one or more days where the sun is above or below the horizon for the entire day. This may cause unexpected behavior when loading this file into the Sun Times Equivalence Thing.";
