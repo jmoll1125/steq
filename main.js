@@ -1,5 +1,5 @@
 //March 26, 2023
-//Moved into its own JS file since I'm putting the program on the homepage and linking to the archive. Nothing was changed here... still steqintl3b6-3 (what a terrible name)
+//Moved into its own JS file since I'm putting the program on the homepage and linking to the archive. Nothing was changed here... still steqintl3b6-4 (what a terrible name)
 function validate() {
 var name = document.getElementById('name').value;
 var lat = parseFloat(document.getElementById('lat').value);
