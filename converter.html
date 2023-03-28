@@ -129,6 +129,7 @@ if (type === "2") {
 	var dstrule;
 	var daylightduration = [];
 	for (i=0; i<sunrises.length; i++) {
+		zstring = "";
 		sunrisemin = parseInt(sunrises[i].substring(0,2))*60 + parseInt(sunrises[i].substring(2,4));
 		sunsetmin = parseInt(sunsets[i].substring(0,2))*60 + parseInt(sunsets[i].substring(2,4));
 		daylightmin = sunsetmin - sunrisemin;
