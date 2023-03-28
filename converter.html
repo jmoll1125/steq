@@ -109,41 +109,40 @@ if (raw.toString().indexOf("*") !== -1 || raw.toString().indexOf("-") !== -1) {
 	polarFlag = 1;
 	};
 if (type === "1") {
-name = name.replace(/ /g, "&")
-file = "STEQ-NDL " + name + " " + raw + dst;
-};
+	name = name.replace(/ /g, "&")
+	file = "STEQ-NDL " + name + " " + raw + dst;
+	};
 if (type === "0") {
-name = name.replace(/ /g, "&")
-file = "STEQ-POL " + name + " " + raw + dst; //only other differences are "NULL" and "d" but... they're not supported by this...
-};
+	name = name.replace(/ /g, "&")
+	file = "STEQ-POL " + name + " " + raw + dst; //only other differences are "NULL" and "d" but... they're not supported by this...
+	};
 if (type === "2") {
-name = name.replace(/ /g, "&")
-var loaded = raw.split(" ")
-sunrises = loaded.slice(0, 366);
-sunsets = loaded.slice(366, 732);
-//make daylight, pulled from steqintl3b4
-var sunrisemin;
-var sunsetmin;
-var daylightmin;
-var zstring;
-var dstrule;
-var daylightduration = [];
-for (i=0; i<sunrises.length; i++) {
-zstring = "";
-sunrisemin = parseInt(sunrises[i].substring(0,2))*60 + parseInt(sunrises[i].substring(2,4));
-sunsetmin = parseInt(sunsets[i].substring(0,2))*60 + parseInt(sunsets[i].substring(2,4));
-daylightmin = sunsetmin - sunrisemin;
-if (daylightmin % 60 < 10) {
-zstring = "0";
-};
-daylightmin = Math.floor(daylightmin / 60) + ":" + zstring + (daylightmin % 60);
-if (daylightmin.length < 5) {
-daylightmin = "0" + daylightmin;
-};
-daylightduration += daylightmin + " ";
-};
-file = "STEQ-DYN " + name + " " + raw + daylightduration + dst;
-};
+	name = name.replace(/ /g, "&")
+	var loaded = raw.split(" ")
+	sunrises = loaded.slice(0, 366);
+	sunsets = loaded.slice(366, 732);
+	//make daylight, pulled from steqintl3b4
+	var sunrisemin;
+	var sunsetmin;
+	var daylightmin;
+	var zstring;
+	var dstrule;
+	var daylightduration = [];
+	for (i=0; i<sunrises.length; i++) {
+		sunrisemin = parseInt(sunrises[i].substring(0,2))*60 + parseInt(sunrises[i].substring(2,4));
+		sunsetmin = parseInt(sunsets[i].substring(0,2))*60 + parseInt(sunsets[i].substring(2,4));
+		daylightmin = sunsetmin - sunrisemin;
+		if (daylightmin % 60 < 10) {
+			zstring = "0";
+			};
+		daylightmin = Math.floor(daylightmin / 60) + ":" + zstring + (daylightmin % 60);
+		if (daylightmin.length < 5) {
+			daylightmin = "0" + daylightmin;
+			};
+		daylightduration += daylightmin + " ";
+		};
+	file = "STEQ-DYN " + name + " " + raw + daylightduration + dst;
+	};
 if (type === "3") {
 name = name.replace(/ /g, "&")
 var dyn = make(lat, lon, tz, dst, 2024, "2");
@@ -203,7 +202,11 @@ document.getElementById('invalid').style.display = 'none';
 document.getElementById("disp").innerHTML = "<code>"+output+"</code>";
 if (polarFlag === 1) {
 document.getElementById("invalid").style.display = "block";
-document.getElementById("invalid").innerHTML = "Your location has one or more days where the sun is above or below the horizon for the entire day. This may cause unexpected behavior when loading this file into the Sun Times Equivalence Thing.";
+document.getElementById("invalid").innerHTML = "Your location has one or more days where the sun is above or below the horizon for the entire day. No versions of the Sun Times Equivalence Thing that support STEQ files support this situation, and STEQ-POL is the only STEQ file format that does.";
+if (document.getElementById("type").value !== "0") {
+document.getElementById("disp").style.display = 'none';
+document.getElementById('dirs').style.display = 'none';
+};
 };
 };
 </script>
