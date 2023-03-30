@@ -132,7 +132,10 @@ if (type === "2") {
 		zstring = "";
 		sunrisemin = parseInt(sunrises[i].substring(0,2))*60 + parseInt(sunrises[i].substring(2,4));
 		sunsetmin = parseInt(sunsets[i].substring(0,2))*60 + parseInt(sunsets[i].substring(2,4));
-		daylightmin = sunsetmin - sunrisemin;
+		daylightmin = sunsetmin - sunrisemin; 
+		if (daylightmin < 0) {
+			daylightmin = 1440 - Math.abs(daylightmin);
+			}; //this is to prevent negative daylight. i was playing around and had a location with a wildly wrong time zone
 		if (daylightmin % 60 < 10) {
 			zstring = "0";
 			};
