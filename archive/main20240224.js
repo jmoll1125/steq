@@ -1,5 +1,5 @@
-//March 26, 2023, and February 22, 2024
-//Used to be steqintl3b6-4 (what a terrible name); now we've got multiple locations!
+//March 26, 2023
+//Moved into its own JS file since I'm putting the program on the homepage and linking to the archive. Nothing was changed here... still steqintl3b6-4 (what a terrible name)
 var locN = 0;
 function add() {
 	document.getElementById('save').style.display = 'block';

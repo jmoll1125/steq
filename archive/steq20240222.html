@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>Home | Sun Times Equivalence Thing</title>
-<link rel="stylesheet" href="steq.css">
+<link rel="stylesheet" href="steq20240222.css">
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
@@ -33,10 +33,7 @@
 <span class="white">Sun Times Equivalence Thing</span>
 </div>
 <div id="content">
-<p>Thank you for visiting the website of the Sun Times Equivalence Thing! It was one of my past passion projects. I worked on it occasionally from 2018 to 2020. In 2023 I created and published this website, and I have made a few updates since then.</p>
-<p>The program allows you to input your location and then allows you to choose any day of the year. It will calculate that day&rsquo;s sunrise and sunset times as well of the duration of daylight, and then find other days in the year that have the same sunrise time, sunset time, or duration of daylight.</p>
-<p>Below is the most recent version of the Sun Times Equivalence Thing&mdash;created February 22, 2024. You can also <a href="archive/index.html">check out the archive</a>.</p>
-<p>This version supports multiple locations.</p>
+<p>Archival version from February 22, 2024.</p>
 <div id="locs">
 </div>
 <button id="save" class="mockbutton" onclick="validate();">Save</button>
@@ -98,22 +95,9 @@
 <button id="submit" class="mockbutton" onclick="process(document.getElementById('loclist').value);">Submit</button>
 <p id="results"></p>
 </div>
-<script src="C:/Users/Jonas1125/Documents/github/steq/archive/gen.js"></script>
-<script src="C:/Users/Jonas1125/Documents/github/steq/archive/computeSunrise2.js"></script>
-<script src="C:/Users/Jonas1125/Documents/github/steq/archive/dst.js"></script>
-<script src="main.js"></script>
+<script src="gen.js"></script>
+<script src="computeSunrise2.js"></script>
+<script src="dst.js"></script>
+<script src="main20240224.js"></script>
 <noscript><p class="error">The Sun Times Equivalence Thing requires Javascript! Please turn it on to use the website.</p></noscript>
-<h3>How to use</h3>
-<ul>
-<li class="nothing"><strong>Place name</strong>: This can be anything you&rsquo;d like.</li>
-<li class="nothing"><strong>Latitude and longitude</strong>: Latitude is degrees north or south of the Equator; longitude is degrees east or west of the Prime Meridian. To find your latitude and longitude, look up something like &ldquo;<a href="https://www.google.com/search?q=nyc+coordinates">NYC coordinates</a>&rdquo; and paste the result into the corresponding boxes. Note that degrees north or east are positive, while degrees west or south are negative. In this example, the latitude would be <code>40.7128</code>, while the longitude would be <code>-74.0060</code>.</li>
-<li class="nothing"><strong>Time zone (winter)</strong>: This is specified in hours ahead or behind of UTC. Here are some examples in the United States:
-<table>
-<tr><td>New York:</td><td>-5</td></tr>
-<tr><td>Chicago:</td><td>-6</td></tr>
-<tr><td>Denver:</td><td>-7</td></tr>
-<tr><td>Los Angeles:</td><td>-8</td></tr>
-</table>
-</li>
-<li class="nothing"><strong>DST rule</strong>: American DST rules (&ldquo;us&rdquo;), European rules (&ldquo;eu&rdquo;), or no DST (&ldquo;no&rdquo;).</li>
 </div></body></html>
