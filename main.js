@@ -16,8 +16,6 @@ function add() {
 	<option value="no">no</option>
 	</select></span>
 	<button id="del`+locN+`" class="mockbutton" onclick="del(`+locN+`);">Delete</button>
-
-
 <p id="invalid`+locN+`" class="error" style="display:none"></p>`
 	newdiv.id = "input-data"+locN;
 	document.getElementById("locs").appendChild(newdiv);
@@ -38,6 +36,7 @@ function hideEdits() {
 	document.getElementById('edit').style.display = 'inline';
 	document.getElementById('save').style.display = 'none';
 	document.getElementById('add').style.display = 'none';
+	document.getElementById('results').innerHTML = '';
 	document.getElementById('check').style.display = 'block';
 	document.getElementById('submit').style.display = 'inline-block';
 };
@@ -412,7 +411,7 @@ daylight = daylight.slice(0, 2) + pluralstr[plurals[0]] + daylight.slice(3, 5) +
 if (daylight.charAt(0) == 0) {
 daylight = daylight.slice(1, daylight.length)
 };
-document.getElementById("results").innerHTML = "On "+months[origmonth]+" "+day+", the sun rises at "+sunrise+" and sets at "+sunset+".<br><br>"+months[origmonth]+" "+day+" has "+daylight+" of daylight.<br><br>The sun also rises at "+sunrise+" on "+sunrisepretty+"<br><br>The sun also sets at "+sunset+" on "+sunsetpretty+"<br><br>"+daylightpretty+" the same duration of daylight.";
+document.getElementById("results").innerHTML = "In "+name+ ", on "+months[origmonth]+" "+day+", the sun rises at "+sunrise+" and sets at "+sunset+".<br><br>"+months[origmonth]+" "+day+" has "+daylight+" of daylight.<br><br>The sun also rises at "+sunrise+" on "+sunrisepretty+"<br><br>The sun also sets at "+sunset+" on "+sunsetpretty+"<br><br>"+daylightpretty+" the same duration of daylight.";
 } else {
 if (sunrise === "----") {
 sunrise = "below";
@@ -422,9 +421,9 @@ sunrise = "above"
 daylight = "24 hours 0 minutes";
 };
 if (sunrisepretty === "no other date!") {
-document.getElementById("results").innerHTML = "On "+months[origmonth]+" "+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+" "+day+" has "+ daylight + " of daylight.<br><br>No other days are like this!"
+document.getElementById("results").innerHTML = "In "+name+ ", on "+months[origmonth]+" "+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+" "+day+" has "+ daylight + " of daylight.<br><br>No other days are like this!"
 } else {
-document.getElementById("results").innerHTML = "On "+months[origmonth]+" "+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+" "+day+" has "+ daylight + " of daylight.<br><br>The other days like this are "+sunrisepretty;
+document.getElementById("results").innerHTML = "In "+name+ ", on "+months[origmonth]+" "+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+" "+day+" has "+ daylight + " of daylight.<br><br>The other days like this are "+sunrisepretty;
 };
 };
 };

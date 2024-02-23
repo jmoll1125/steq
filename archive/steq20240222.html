@@ -14,10 +14,10 @@
 #edit {display:none;}
 </style>
 <!--favicon code -->
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="manifest" href="site.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="manifest" href="../site.webmanifest">
 <link rel="mask-icon" href="safari-pinned-tab.svg" color="#44bbff">
 <meta name="msapplication-TileColor" content="#2b5797">
 <meta name="theme-color" content="#ffffff">
@@ -33,16 +33,18 @@
 <span class="white">Sun Times Equivalence Thing</span>
 </div>
 <div id="content">
-<p>Archival version from February 22, 2024.</p>
+<p>Archived version from February 22, 2024.</p>
 <div id="locs">
 </div>
-<button id="save" class="mockbutton" onclick="validate();">Save</button>
+<div id="locpicker">
 <button id="add" class="mockbutton" onclick="add();">Add a new location</button>
+<button id="save" class="mockbutton" onclick="validate();">Save</button>
 <label for="loclist" id="loclistx">Choose a location:</label>
 <select name="loclist" id="loclist" class="mockbutton"></select>
 <button id="edit" class="mockbutton" onclick="showEdits();">Edit locations</button>
+</div>
 <div id="check">
-<p>Date to check:</p>
+Date to check:
 <select id="month" size="1" class="mockbutton">
 <option value="0">January</option>
 <option value="1">February</option>
@@ -91,13 +93,13 @@
 <option value="31">31</option>
 </select>
 <input type="number" id="year" min="1" max="9999" class="mockbutton"></input>
-<br><br>
+<br>
 <button id="submit" class="mockbutton" onclick="process(document.getElementById('loclist').value);">Submit</button>
 <p id="results"></p>
 </div>
 <script src="gen.js"></script>
 <script src="computeSunrise2.js"></script>
 <script src="dst.js"></script>
-<script src="main20240224.js"></script>
+<script src="main20240222.js"></script>
 <noscript><p class="error">The Sun Times Equivalence Thing requires Javascript! Please turn it on to use the website.</p></noscript>
 </div></body></html>
