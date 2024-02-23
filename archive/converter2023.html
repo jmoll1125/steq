@@ -41,6 +41,7 @@ FINALLY! got steq-jul to work!-->
 <hr>
 <p><a href="history.html">Learn more about these file formats</a></p>
 <hr>
+<p>File generator</p>
 <span class="ib"><label for="type">File type: </label>
 <select id="type" size="1" class="mockbutton">
 <option value="0">STEQ-POL</option>
@@ -60,32 +61,17 @@ FINALLY! got steq-jul to work!-->
 <option value="eu">eu</option>
 </select></span><br>
 <button id="gen" class="mockbutton" onclick="validate();">Go</button>
-<br><br>When you click Go, the file will automatically be downloaded.
 </div>
+<p id="dirs">Copy the text below and paste it into a text-editing program such as Notepad. Save it under whatever name you'd like with the file extention .steq. You can then visit the Sun Times Equivalence Thing and upload the file you just created.</p>
 <p id="invalid" class="error"></p>
+<p id="disp"></p>
 <p><a href="archive/index.html">Back to the archive</a></p>
 <script src="archive/gen.js"></script>
 <script src="archive/dst.js"></script>
 <script src="archive/computeSunrise2.js"></script>
 <script>
-function save(filename, data) {
-    const blob = new Blob([data], {type: 'text'});
-    if(window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveBlob(blob, filename);
-    }
-    else{
-        const elem = window.document.createElement('a');
-        elem.href = window.URL.createObjectURL(blob);
-        elem.download = filename;        
-        document.body.appendChild(elem);
-        elem.click();        
-        document.body.removeChild(elem);
-		window.URL.revokeObjectURL(blob);
-    }
-} //https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server/18197341#18197341
-var name;
 function validate() {
-name = document.getElementById('name').value;
+var name = document.getElementById('name').value;
 var lat = parseFloat(document.getElementById('lat').value);
 var lon = parseFloat(document.getElementById('lon').value);
 var tz = parseFloat(document.getElementById('tz').value);
@@ -215,16 +201,17 @@ file = jul.slice(9,jul.length);
 return file;
 };
 function display(output) {
+document.getElementById('dirs').style.display = 'block';
+document.getElementById('invalid').style.display = 'none';
+document.getElementById("disp").style.display = 'block';
+document.getElementById("disp").innerHTML = "<code>"+output+"</code>";
 if (polarFlag === 1) {
 document.getElementById("invalid").style.display = "block";
 document.getElementById("invalid").innerHTML = "Your location has one or more days where the sun is above or below the horizon for the entire day. No versions of the Sun Times Equivalence Thing that support STEQ files support this situation, and STEQ-POL is the only STEQ file format that does.";
-if (document.getElementById("type").value == "0") {
-save(name+".steq",output);
+if (document.getElementById("type").value !== "0") {
+document.getElementById("disp").style.display = 'none';
+document.getElementById('dirs').style.display = 'none';
 };
-} else {
-output += "\n"
-document.getElementById('invalid').style.display = 'none';
-save(name+".steq",output);
 };
 };
 </script>
