@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>Home | Sun Times Equivalence Thing</title>
-<link rel="stylesheet" href="steq20240222.css">
+<link rel="stylesheet" href="steq.css">
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
@@ -14,10 +14,10 @@
 #edit {display:none;}
 </style>
 <!--favicon code -->
-<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="manifest" href="../site.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="mask-icon" href="safari-pinned-tab.svg" color="#44bbff">
 <meta name="msapplication-TileColor" content="#2b5797">
 <meta name="theme-color" content="#ffffff">
@@ -33,7 +33,10 @@
 <span class="white">Sun Times Equivalence Thing</span>
 </div>
 <div id="content">
-<p>Archived version from February 22, 2024.</p>
+<p>Thank you for visiting the website of the Sun Times Equivalence Thing! It was one of my past passion projects. I worked on it occasionally from 2018 to 2020. In 2023 I created and published this website, and I have made a few updates since then.</p>
+<p>The program allows you to input your location and then allows you to choose any day of the year. It will calculate that day&rsquo;s sunrise and sunset times as well of the duration of daylight, and then find other days in the year that have the same sunrise time, sunset time, or duration of daylight.</p>
+<p>Below is the most recent version of the Sun Times Equivalence Thing, created February 22, 2024. You can also <a href="archive/index.html">check out the archive</a>.</p>
+<p>This version supports multiple locations.</p><hr>
 <div id="locs">
 </div>
 <div id="locpicker">
@@ -44,7 +47,7 @@
 <button id="edit" class="mockbutton" onclick="showEdits();">Edit locations</button>
 </div>
 <div id="check">
-Date to check:
+<label for="month">Date to check:</label>
 <select id="month" size="1" class="mockbutton">
 <option value="0">January</option>
 <option value="1">February</option>
@@ -97,9 +100,23 @@ Date to check:
 <button id="submit" class="mockbutton" onclick="process(document.getElementById('loclist').value);">Submit</button>
 <p id="results"></p>
 </div>
-<script src="gen.js"></script>
-<script src="computeSunrise2.js"></script>
-<script src="dst.js"></script>
-<script src="main20240222.js"></script>
+<script src="archive/gen.js"></script>
+<script src="archive/computeSunrise2.js"></script>
+<script src="archive/dst.js"></script>
+<script src="main.js"></script>
 <noscript><p class="error">The Sun Times Equivalence Thing requires Javascript! Please turn it on to use the website.</p></noscript>
+<hr>
+<h3>How to use</h3>
+<ul>
+<li class="nothing"><strong>Place name</strong>: This can be anything you&rsquo;d like. If left blank, it will default to your coordinates.</li>
+<li class="nothing"><strong>Latitude and longitude</strong>: Latitude is degrees north or south of the Equator; longitude is degrees east or west of the Prime Meridian. To find your latitude and longitude, look up something like &ldquo;<a href="https://www.google.com/search?q=nyc+coordinates">NYC coordinates</a>&rdquo; and paste the result into the corresponding boxes. Note that degrees north or east are positive, while degrees west or south are negative. In this example, the latitude would be <code>40.7</code>, while the longitude would be <code>-74.0</code>. It&rsquo;s okay to truncate to one decimal place or so.</li>
+<li class="nothing"><strong>Time zone (winter)</strong>: This is specified in hours ahead or behind of UTC. Here are some examples in the United States:
+<table>
+<tr><td>New York:</td><td>-5</td></tr>
+<tr><td>Chicago:</td><td>-6</td></tr>
+<tr><td>Denver:</td><td>-7</td></tr>
+<tr><td>Los Angeles:</td><td>-8</td></tr>
+</table>
+</li>
+<li class="nothing"><strong>DST rule</strong>: American DST rules (&ldquo;us&rdquo;), European rules (&ldquo;eu&rdquo;), or no DST (&ldquo;no&rdquo;).</li>
 </div></body></html>
