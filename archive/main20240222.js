@@ -56,7 +56,7 @@ function del(N) {
 	N = N.substring(3);
 	document.getElementById("input-data"+N).remove();
 	locN.splice(locN.indexOf(N), 1)
-	if(locN === []) {
+	if(locN.length === 0) {
 	document.getElementById('save').style.display = 'none';
 	};
 };
@@ -80,6 +80,7 @@ errors+= "Time zone must be between -12 and 14. (Use decimals for half hours.)<b
 };
 allErrors += errors;
 if (errors === "") {
+	document.getElementById('invalid'+locN[i]).style.display = 'none';
 	continue;
 } else {
 document.getElementById('invalid'+locN[i]).style.display = 'block';
