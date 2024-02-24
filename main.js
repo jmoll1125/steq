@@ -80,6 +80,7 @@ errors+= "Time zone must be between -12 and 14. (Use decimals for half hours.)<b
 };
 allErrors += errors;
 if (errors === "") {
+	document.getElementById('invalid'+locN[i]).style.display = 'none';
 	continue;
 } else {
 document.getElementById('invalid'+locN[i]).style.display = 'block';
