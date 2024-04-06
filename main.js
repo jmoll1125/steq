@@ -21,6 +21,7 @@ function add() {
 	newdiv.id = "input-data"+nonce;
 	document.getElementById("locs").appendChild(newdiv);
 	locN.push(nonce);
+	document.getElementById('name'+locN[locN.length-1]).focus();
 };
 function hideEdits() {
 	document.getElementById('loclist').innerHTML = ""
@@ -29,6 +30,8 @@ function hideEdits() {
 		if (document.getElementById('name'+locN[i]).value === "") {
 			document.getElementById('name'+locN[i]).value = document.getElementById('lat'+locN[i]).value + ", " + document.getElementById('lon'+locN[i]).value;
 		};	
+		//append child for this one
+		//do anti-XSS
 		document.getElementById('loclist').innerHTML += "<option value="+locN[i]+">"+document.getElementById('name'+locN[i]).value+"</option>"	
 	};
 	document.getElementById('loclist').style.display = 'inline';
@@ -51,6 +54,7 @@ function showEdits() {
 	document.getElementById('loclist').style.display = 'none';
 	document.getElementById('loclistx').style.display = 'none';
 	document.getElementById('check').style.display = 'none';
+	document.getElementById('name'+locN[0]).focus();
 };
 function del(N) {
 	N = N.substring(3);
