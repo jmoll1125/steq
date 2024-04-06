@@ -62,9 +62,12 @@ function del(N) {
 	locN.splice(locN.indexOf(N), 1)
 	if(locN.length === 0) {
 	document.getElementById('save').style.display = 'none';
+	} else {
+	document.getElementById('name'+locN[locN.length-1]).focus();
 	};
 };
 function validate() {
+	var badFields = [];
 	var allErrors = "";
 	for (i=0; i<locN.length; i++) {
 var name = document.getElementById('name'+locN[i]).value;
@@ -75,12 +78,15 @@ var dst = document.getElementById('dst'+locN[i]).value;
 var errors = "";
 if (isNaN(lat) || lat < -90 || lat > 90 ) {
 errors+= "Latitude must be between -90 and 90.<br>";
+badFields.push('lat'+locN[i]);
 };
 if (isNaN(lon) || lon < -180 || lon > 180) {
 errors+= "Longitude must be between -180 and 180.<br>";
+badFields.push('lon'+locN[i]);
 };
 if (isNaN(tz) || tz < -12 || tz > 14) {
 errors+= "Time zone must be between -12 and 14. (Use decimals for half hours.)<br>";
+badFields.push('tz'+locN[i]);
 };
 allErrors += errors;
 if (errors === "") {
@@ -91,6 +97,7 @@ document.getElementById('invalid'+locN[i]).style.display = 'block';
 document.getElementById("invalid"+locN[i]).innerHTML = errors;
 document.getElementById('check').style.display = 'none';
 document.getElementById('submit').style.display = 'none';
+document.getElementById(badFields[0]).focus();
 //we will do saving to local storage later. also we should not xss the name but i don't know how to do that https://stackoverflow.com/questions/17378199/uncaught-referenceerror-function-is-not-defined-with-onclick
 };
 };
