@@ -249,7 +249,7 @@ function process(N) {
 					};
 					outMonth = months[outMonth];
 					outDay = onDate
-					sunriseoutputstr = sunriseoutputstr + outMonth + " " + outDay + ", ";
+					sunriseoutputstr = sunriseoutputstr + outMonth + "\u00A0" + outDay + ", ";
 				};
 			};
 			//Making this string pretty
@@ -297,7 +297,7 @@ function process(N) {
 						};
 					outDay = onDate
 					outMonth = months[outMonth];
-					sunsetoutputstr = sunsetoutputstr + outMonth + " " + outDay + ", ";
+					sunsetoutputstr = sunsetoutputstr + outMonth + "\u00A0" + outDay + ", ";
 					};
 				};
 				//
@@ -329,7 +329,7 @@ function process(N) {
 						};
 						outDay = onDate
 						outMonth = months[outMonth];
-						daylightoutputstr = daylightoutputstr + outMonth + " " + outDay + ", ";
+						daylightoutputstr = daylightoutputstr + outMonth + "\u00A0" + outDay + ", ";
 					};
 				};
 				//
@@ -413,7 +413,7 @@ function process(N) {
 				} else {
 					plurals+= "3"
 				}
-				var pluralstr = [" hour ", " hours ", " minute", " minutes"]
+				var pluralstr = ["\u00A0hour ", "\u00A0hours ", "\u00A0minute", "\u00A0minutes"]
 				if (daylight.charAt(3) == "0") {
 					daylight = daylight.slice(0, 2) + pluralstr[plurals[0]] + daylight.slice(4, 5) + pluralstr[plurals[1]]; //no more leading zero
 				} else {
@@ -422,7 +422,7 @@ function process(N) {
 				if (daylight.charAt(0) == 0) {
 					daylight = daylight.slice(1, daylight.length)
 				};
-				document.getElementById("results").innerHTML = "In "+name+ ", on "+months[origmonth]+" "+day+", the sun rises at "+sunrise+" and sets at "+sunset+".<br><br>"+months[origmonth]+" "+day+" has "+daylight+" of daylight.<br><br>The sun also rises at "+sunrise+" on "+sunrisepretty+"<br><br>The sun also sets at "+sunset+" on "+sunsetpretty+"<br><br>"+daylightpretty+" the same duration of daylight.";
+				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun rises at "+sunrise+" and sets at "+sunset+".\u000A\u000A"+months[origmonth]+"\u00A0"+day+" has "+daylight+" of daylight.\u000A\u000AThe sun also rises at "+sunrise+" on "+sunrisepretty+"\u000A\u000AThe sun also sets at "+sunset+" on "+sunsetpretty+"\u000A\u000A"+daylightpretty+" the same duration of daylight.";
 			} else {
 				if (sunrise === "----") {
 					sunrise = "below";
@@ -432,9 +432,9 @@ function process(N) {
 					daylight = "24 hours 0 minutes";
 				};
 			if (sunrisepretty === "no other date!") {
-				document.getElementById("results").innerHTML = "In "+name+ ", on "+months[origmonth]+" "+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+" "+day+" has "+ daylight + " of daylight.<br><br>No other days are like this!"
+				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.<br><br>No other days are like this!"
 			} else {
-				document.getElementById("results").innerHTML = "In "+name+ ", on "+months[origmonth]+" "+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+" "+day+" has "+ daylight + " of daylight.<br><br>The other days like this are "+sunrisepretty;
+				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.<br><br>The other days like this are "+sunrisepretty;
 				};
 			};
 		};
