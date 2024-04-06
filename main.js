@@ -422,7 +422,7 @@ function process(N) {
 				if (daylight.charAt(0) == 0) {
 					daylight = daylight.slice(1, daylight.length)
 				};
-				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun rises at "+sunrise+" and sets at "+sunset+".\u000A\u000A"+months[origmonth]+"\u00A0"+day+" has "+daylight+" of daylight.\u000A\u000AThe sun also rises at "+sunrise+" on "+sunrisepretty+"\u000A\u000AThe sun also sets at "+sunset+" on "+sunsetpretty+"\u000A\u000A"+daylightpretty+" the same duration of daylight.";
+				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun rises at "+sunrise+" and sets at "+sunset+".\r\r\n\r\n"+months[origmonth]+"\u00A0"+day+" has "+daylight+" of daylight.\r\n\r\nThe sun also rises at "+sunrise+" on "+sunrisepretty+"\r\n\r\nThe sun also sets at "+sunset+" on "+sunsetpretty+"\r\n\r\n"+daylightpretty+" the same duration of daylight.";
 			} else {
 				if (sunrise === "----") {
 					sunrise = "below";
@@ -432,9 +432,9 @@ function process(N) {
 					daylight = "24\u00A0hours 0\u00A0minutes";
 				};
 			if (sunrisepretty === "no other date!") {
-				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.<br><br>No other days are like this!"
+				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.\r\n\r\nTherefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.\r\n\r\nNo other days are like this!"
 			} else {
-				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.<br><br>The other days like this are "+sunrisepretty;
+				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.\r\n\r\nTherefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.\r\n\r\nThe other days like this are "+sunrisepretty;
 				};
 			};
 		};
