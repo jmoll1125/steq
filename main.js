@@ -370,10 +370,10 @@ function process(N) {
 					daylightpretty = daylightpretty + " have"
 				};
 				//locales for am/pm? we need to account for 0000, and rollovers.
-				var ampm = " AM";
+				var ampm = "\u00A0AM";
 				if (sunrise > 1159) {
 					sunrise = sunrise - 1200;
-					ampm = " PM";
+					ampm = "\u00A0PM";
 				};
 				if (sunrise < 100) {
 					sunrise = sunrise + 1200;
@@ -386,10 +386,10 @@ function process(N) {
 				};
 				sunrise = sunrise + ampm
 				//sunset
-				ampm = " AM";
+				ampm = "\u00A0AM";
 				if (sunset > 1159) {
 					sunset = sunset - 1200;
-					ampm = " PM";
+					ampm = "\u00A0PM";
 				};
 				if (sunset < 100) {
 					sunset = sunset + 1200;
@@ -426,10 +426,10 @@ function process(N) {
 			} else {
 				if (sunrise === "----") {
 					sunrise = "below";
-					daylight = "0 hours 0 minutes";
+					daylight = "0\u00A0hours 0\u00A0minutes";
 				} else {
 					sunrise = "above"
-					daylight = "24 hours 0 minutes";
+					daylight = "24\u00A0hours 0\u00A0minutes";
 				};
 			if (sunrisepretty === "no other date!") {
 				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.<br><br>Therefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.<br><br>No other days are like this!"
