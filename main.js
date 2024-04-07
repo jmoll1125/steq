@@ -315,16 +315,7 @@ function process(N) {
 					sunsetoutputstr = "no other date!"
 				} else {
 					for (i=0; i < sunsetoccurs.length; i++) {
-						outMonth = 0;
-						outDay = 0;
-						onDate = sunsetoccurs[i] + 1;
-						for (j=0; onDate > parseInt(maxdays[outMonth]); j++) {
-							onDate = onDate - parseInt(maxdays[j]);
-							outMonth = outMonth + 1;
-						};
-					outDay = onDate
-					outMonth = months[outMonth];
-					sunsetoutputstr = sunsetoutputstr + outMonth + "\u00A0" + outDay + ", ";
+						sunsetoutputstr += getDayOfYear(sunsetoccurs[i])+", ";
 					};
 				};
 				//
@@ -347,16 +338,7 @@ function process(N) {
 					daylightcommas = 0;
 				} else {
 					for (i=0; i < daylightoccurs.length; i++) {
-						outMonth = 0;
-						outDay = 0;
-						onDate = daylightoccurs[i] + 1;
-						for (j=0; onDate > parseInt(maxdays[outMonth]); j++) {
-							onDate = onDate - parseInt(maxdays[j]);
-							outMonth = outMonth + 1;
-						};
-						outDay = onDate
-						outMonth = months[outMonth];
-						daylightoutputstr = daylightoutputstr + outMonth + "\u00A0" + outDay + ", ";
+						daylightoutputstr += getDayOfYear(daylightoccurs[i])+", ";
 					};
 				};
 				//
