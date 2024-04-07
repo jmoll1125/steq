@@ -32,7 +32,8 @@ function hideEdits() {
 		};	
 		//append child for this one
 		//do anti-XSS
-		document.getElementById('loclist').innerHTML += "<option value="+locN[i]+">"+document.getElementById('name'+locN[i]).value+"</option>"	
+		document.getElementById('loclist').innerHTML += "<option value="+locN[i]+" id=sel"+locN[i]+"></option>"	
+		document.getElementById("sel"+locN[i]).textContent=document.getElementById('name'+locN[i]).value;
 	};
 	document.getElementById('loclist').style.display = 'inline';
 	document.getElementById('loclistx').style.display = 'inline';
