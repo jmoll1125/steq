@@ -67,6 +67,18 @@ function del(N) {
 	document.getElementById('name'+locN[locN.length-1]).focus();
 	};
 };
+function getDayOfYear(num) {
+	outMonth = 0;
+	outDay = 0;
+	onDate = num+1;
+	for (j=0; onDate > parseInt(maxdays[outMonth]); j++) {
+		onDate = onDate - parseInt(maxdays[j]);
+		outMonth = outMonth + 1;
+	};
+	outMonth = months[outMonth];
+	outDay = onDate
+	return outMonth + "\u00A0" + outDay;
+};
 function validate() {
 	var badFields = [];
 	var allErrors = "";
@@ -110,6 +122,7 @@ var sunrises;
 var sunsets;
 var daylightduration;
 var loaded;
+var maxdays;
 //Former loading script.
 document.getElementById("year").value = (new Date().getFullYear()).toString();
 //this is where the stuff was defined
@@ -133,7 +146,6 @@ function process(N) {
 		loaded = generate(lat, lon, tz, dst, year);
 		loaded = loaded.split(" ")
 		var ly;
-		var maxdays;
 		if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
 			maxdays = ["31", "29", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
 			ly = 1;
@@ -241,16 +253,7 @@ function process(N) {
 				sunriseoutputstr = "no other date!"
 			} else {
 				for (i=0; i < sunriseoccurs.length; i++) {
-					outMonth = 0;
-					outDay = 0;
-					onDate = sunriseoccurs[i]+1;
-					for (j=0; onDate > parseInt(maxdays[outMonth]); j++) {
-						onDate = onDate - parseInt(maxdays[j]);
-						outMonth = outMonth + 1;
-					};
-					outMonth = months[outMonth];
-					outDay = onDate
-					sunriseoutputstr = sunriseoutputstr + outMonth + "\u00A0" + outDay + ", ";
+				sunriseoutputstr += getDayOfYear(sunriseoccurs[i]) + ", ";
 				};
 			};
 			//Making this string pretty
@@ -267,6 +270,23 @@ function process(N) {
 				};
 			};
 			sunrisepretty = sunrisepretty.join("");
+			//
+			var polarEnd = checkdate;
+			var polarstr = "";
+		if (sunrise === "****" || sunrise === "----") {
+				for (; sunrises[polarEnd] == sunrise; polarEnd++) {
+					if (polarEnd == 364 + ly) {
+						polarEnd = 0;
+					};
+				};
+				if (sunrise === "****") {
+					polarstr = "The next sunset is on "
+				} else {
+					polarstr = "The next sunrise is on "
+				};
+				polarstr += getDayOfYear(polarEnd);
+				polarstr += "."
+		};
 			//I moved all the sunrise code up here, so it does it first. It then skips all sunset and daylight processing IF the sun is below or above the horizon the whole day.
 			//More work is required for other things.
 			if (!(sunrise === sunset && (sunrise === "----" || sunrise === "****"))) {
@@ -433,10 +453,15 @@ function process(N) {
 					daylight = "24\u00A0hours 0\u00A0minutes";
 				};
 			if (sunrisepretty === "no other date!") {
-				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.\r\n\r\nTherefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.\r\n\r\nNo other days are like this!"
+				sunrisepretty = "No other days are like this!"
 			} else {
-				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.\r\n\r\nTherefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.\r\n\r\nThe other days like this are "+sunrisepretty;
+				if (sunriseoccurs.length == 1) {
+					sunrisepretty = "The other day like this is "+sunrisepretty;
+				} else {
+					sunrisepretty = "The other days like this are "+sunrisepretty;
 				};
+			};
+			document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.\r\n\r\nTherefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.\r\n\r\n"+sunrisepretty+"\r\n\r\n"+polarstr;
 			};
 		};
 	};
