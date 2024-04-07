@@ -458,7 +458,18 @@ function process(N) {
 				if (daylight.charAt(0) == 0) {
 					daylight = daylight.slice(1, daylight.length)
 				};
-				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun rises at "+sunrise+" and sets at "+sunset+".\r\r\n\r\n"+months[origmonth]+"\u00A0"+day+" has "+daylight+" of daylight.\r\n\r\nThe sun also rises at "+sunrise+" on "+sunrisepretty+"\r\n\r\nThe sun also sets at "+sunset+" on "+sunsetpretty+"\r\n\r\n"+daylightpretty+" the same duration of daylight.";
+				console.log(sunset);
+				if (sunrise[0] == "N") {
+					sunrise = "does not rise";
+				} else {
+					sunrise = "rises at "+sunrise;
+				};
+				if (sunset[0] == "N") {
+					sunset = "does not set";
+				} else {
+					sunset = "sets at "+sunset;
+				};
+				document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun "+sunrise+" and "+sunset+".\r\r\n\r\n"+months[origmonth]+"\u00A0"+day+" has "+daylight+" of daylight.\r\n\r\nThe sun also "+sunrise+" on "+sunrisepretty+"\r\n\r\nThe sun also "+sunset+" on "+sunsetpretty+"\r\n\r\n"+daylightpretty+" the same duration of daylight.";
 			} else {
 				if (sunrise === "----") {
 					sunrise = "below";
