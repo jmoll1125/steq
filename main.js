@@ -9,7 +9,7 @@ function add() {
 	<span class="ib"><label for="name`+nonce+`">Place name: </label><input type="text" id="name`+nonce+`" class="mockbutton"/></span>
 	<span class="ib"><label for="lat`+nonce+`">Latitude: </label><input type="number" id="lat`+nonce+`" name="lat" min="-90" max="90" class="mockbutton"/></span>
 	<span class="ib"><label for="lon`+nonce+`">Longitude: </label><input type="number" id="lon`+nonce+`" name="lon" min="-180" max="180" class="mockbutton"/></span>
-	<span class="ib"><label for="tz"`+nonce+`>Time zone (winter): </label><input type="number" id="tz`+nonce+`" name="tz" min="-12" max="14" class="mockbutton"/></span>
+	<span class="ib"><label for="tz`+nonce+`>"Time zone (winter): </label><input type="number" id="tz`+nonce+`" name="tz" min="-12" max="14" class="mockbutton"/></span>
 	<span class="ib"><label for="dst`+nonce+`">DST rule: </label>
 	<select id="dst`+nonce+`" size="1" class="mockbutton">
 	<option value="us">us</option>

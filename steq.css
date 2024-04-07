@@ -54,3 +54,4 @@ input[type='number']{ width: 120px; }
 [id^="input-data"] { border: 2px solid #ddd; padding: 3px; margin-bottom: 8px; border-radius: 10px; text-align: middle;}
 [id^="del"]  {padding: 0px;}
 #results {white-space: pre-line; }
+li.loclist { padding: 2px; }
