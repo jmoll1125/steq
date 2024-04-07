@@ -79,6 +79,25 @@ function getDayOfYear(num) {
 	outDay = onDate
 	return outMonth + "\u00A0" + outDay;
 };
+function makeDaylight(sunrise, sunset) {
+	zstring = "";
+	sunrisemin = parseInt(sunrise.substring(0,2))*60 + parseInt(sunrise.substring(2,4));
+	sunsetmin = parseInt(sunset.substring(0,2))*60 + parseInt(sunset.substring(2,4));
+	if (sunsetmin < sunrisemin) {
+		sunsetmin+= 1440;
+	};//this fixes a bug with negative daylight... i think...
+	  //yes! although now we would need to set a flag for "doesn't set until the next day"...
+	  //hm. will need to tackle this later.
+	daylightmin = sunsetmin - sunrisemin;
+	if (daylightmin % 60 < 10) {
+		zstring = "0";
+	};
+	daylightmin = Math.floor(daylightmin / 60) + ":" + zstring + (daylightmin % 60);
+	if (daylightmin.length < 5) {
+		daylightmin = "0" + daylightmin;
+	};
+	return(daylightmin);
+};
 function validate() {
 	var badFields = [];
 	var allErrors = "";
@@ -167,23 +186,7 @@ function process(N) {
 		var zstring;
 		daylightduration = [];
 		for (i=0; i<sunrises.length; i++) {
-			zstring = "";
-			sunrisemin = parseInt(sunrises[i].substring(0,2))*60 + parseInt(sunrises[i].substring(2,4));
-			sunsetmin = parseInt(sunsets[i].substring(0,2))*60 + parseInt(sunsets[i].substring(2,4));
-			if (sunsetmin < sunrisemin) {
-				sunsetmin+= 1440;
-			};//this fixes a bug with negative daylight... i think...
-			  //yes! although now we would need to set a flag for "doesn't set until the next day"...
-			  //hm. will need to tackle this later.
-			daylightmin = sunsetmin - sunrisemin;
-			if (daylightmin % 60 < 10) {
-				zstring = "0";
-			};
-			daylightmin = Math.floor(daylightmin / 60) + ":" + zstring + (daylightmin % 60);
-			if (daylightmin.length < 5) {
-				daylightmin = "0" + daylightmin;
-			};
-			daylightduration.push(daylightmin);
+			daylightduration.push(makeDaylight(sunrises[i], sunsets[i]));
 		};
 		//
 		var month = document.getElementById('month').value;
@@ -198,10 +201,12 @@ function process(N) {
 			for (i=0; i < sunrises.length; i++) {
 				strtemp = sunrises[i]
 				if (strtemp !== "****" && strtemp !== "----") {
-					strtemp = parseInt(strtemp)
+					//strtemp = parseInt(strtemp)
 				} else {
 					if (strtemp !== sunsets[i]) {
 						strtemp = "L" + strtemp.substring(1)
+						daylightduration[i] = makeDaylight("0000", sunsets[i])
+						//I think this should work... assuming there is no L for both sunrise and sunset on the same day which should not happen
 						console.log(strtemp)
 					}; 
 				};
@@ -211,10 +216,11 @@ function process(N) {
 			for (i=0; i < sunsets.length; i++) {
 				strtemp = sunsets[i]
 				if (strtemp !== "****" && strtemp !== "----") {
-					strtemp = parseInt(strtemp)
+					//strtemp = parseInt(strtemp)
 				} else {
 					if (strtemp !== sunrises[i]) {
 						strtemp = "L" + strtemp.substring(1)
+						daylightduration[i] = makeDaylight(sunrises[i],"0000")
 					};
 				};
 				sunsets[i] = strtemp
@@ -392,6 +398,7 @@ function process(N) {
 				};
 				//locales for am/pm? we need to account for 0000, and rollovers.
 				var ampm = "\u00A0AM";
+				sunrise = parseInt(sunrise);
 				if (sunrise > 1159) {
 					sunrise = sunrise - 1200;
 					ampm = "\u00A0PM";
@@ -406,8 +413,13 @@ function process(N) {
 					sunrise = sunrise.slice(0, 2) + ":" + sunrise.slice(2, 4);
 				};
 				sunrise = sunrise + ampm
+				console.log(sunrise)
+				if (sunrise[0] === "0") { //no more leading zero
+					sunrise = sunrise.slice(1);
+				};
 				//sunset
 				ampm = "\u00A0AM";
+				sunset = parseInt(sunset);
 				if (sunset > 1159) {
 					sunset = sunset - 1200;
 					ampm = "\u00A0PM";
@@ -422,6 +434,9 @@ function process(N) {
 					sunset = sunset.slice(0, 2) + ":" + sunset.slice(2, 4);
 				};
 				sunset = sunset + ampm
+				if (sunset[0] === "0") { //no more leading zero
+					sunset = sunset.slice(1);
+				};
 				//daylight
 				var plurals = "";
 				if (daylight.charAt(0) == "0" && daylight.charAt(1) == "1") {
