@@ -68,9 +68,9 @@ function del(N) {
 	};
 };
 function getDayOfYear(num) {
-	outMonth = 0;
-	outDay = 0;
-	onDate = num+1;
+	var outMonth = 0;
+	var outDay = 0;
+	var onDate = num+1;
 	for (j=0; onDate > parseInt(maxdays[outMonth]); j++) {
 		onDate = onDate - parseInt(maxdays[j]);
 		outMonth = outMonth + 1;
@@ -80,15 +80,15 @@ function getDayOfYear(num) {
 	return outMonth + "\u00A0" + outDay;
 };
 function makeDaylight(sunrise, sunset) {
-	zstring = "";
-	sunrisemin = parseInt(sunrise.substring(0,2))*60 + parseInt(sunrise.substring(2,4));
-	sunsetmin = parseInt(sunset.substring(0,2))*60 + parseInt(sunset.substring(2,4));
+	var zstring = "";
+	var sunrisemin = parseInt(sunrise.substring(0,2))*60 + parseInt(sunrise.substring(2,4));
+	var sunsetmin = parseInt(sunset.substring(0,2))*60 + parseInt(sunset.substring(2,4));
 	if (sunsetmin < sunrisemin) {
 		sunsetmin+= 1440;
 	};//this fixes a bug with negative daylight... i think...
 	  //yes! although now we would need to set a flag for "doesn't set until the next day"...
 	  //hm. will need to tackle this later.
-	daylightmin = sunsetmin - sunrisemin;
+	var daylightmin = sunsetmin - sunrisemin;
 	if (daylightmin % 60 < 10) {
 		zstring = "0";
 	};
@@ -180,10 +180,6 @@ function process(N) {
 			sunsets = loaded.slice(366, 732);
 		};
 		//make daylight
-		var sunrisemin;
-		var sunsetmin;
-		var daylightmin;
-		var zstring;
 		daylightduration = [];
 		for (i=0; i<sunrises.length; i++) {
 			daylightduration.push(makeDaylight(sunrises[i], sunsets[i]));
@@ -252,9 +248,6 @@ function process(N) {
 			};
 			var sunrisecommas = sunriseoccurs.length - 1;
 			var sunriseoutputstr = "";
-			var outDay;
-			var outMonth;
-			var onDate;
 			if (sunriseoccurs.length == 0) {
 				sunriseoutputstr = "no other date!"
 			} else {
