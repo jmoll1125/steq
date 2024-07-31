@@ -115,7 +115,7 @@ var lat = parseFloat(document.getElementById('lat'+locN[i]).value);
 var lon = parseFloat(document.getElementById('lon'+locN[i]).value);
 var tz = parseFloat(document.getElementById('tz'+locN[i]).value);
 var dst = document.getElementById('dst'+locN[i]).value;
-var errors = "";
+let errors = "";
 if (isNaN(lat) || lat < -90 || lat > 90 ) {
 errors+= "Latitude must be between -90 and 90.<br>";
 badFields.push('lat'+locN[i]);
@@ -147,6 +147,9 @@ document.getElementById(badFields[0]).focus();
 };
 };
 if (allErrors == "") {
+	for (let i=0; i<locN.length; i++) {
+			prepare(locN[i]);
+		};
 	hideEdits();
 };
 };
@@ -278,10 +281,12 @@ function intoDates(sunriseoccurs) {
 	return(sunrisepretty);
 }; 
 function goodDate() {
-document.getElementById("results").value = "";
-var year = document.getElementById('year').value;		
-	if ((isNaN(parseFloat(year)) || isNaN(year - 0))|| year < 0 || year > 9999 || year % 1 !== 0) {
-		document.getElementById("results").innerHTML = "<p class=\"error\">Invalid year!</p>";
+	document.getElementById("results").textContent = "";
+	var year = document.getElementById('year').value;
+	year = parseInt(year);
+	let errors = "";		
+	if ((isNaN(parseFloat(year)) || isNaN(year - 0))|| year < 2000 || year > 2099 || year % 1 !== 0) {
+		errors+= "Year must be between 2000 and 2099.";
 	};
 	if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
 		maxdays = ["31", "29", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
@@ -293,32 +298,39 @@ var year = document.getElementById('year').value;
 	var month = document.getElementById('month').value;
 	var day = document.getElementById('date').value;
 	var origmonth = month;
-	 checkdate = 0;
+	checkdate = 0;
 	for (i=0; month != 0; i++) {
 		checkdate = checkdate + parseInt(maxdays[i]);
 		month = month - 1
 	};
 	checkdate = checkdate + parseInt(day);
 	checkdate = checkdate - 1;
-	if (parseInt(day) > parseInt(maxdays[month]) || isNaN(year)|| year < 0 || year > 9999) {
-		document.getElementById("results").innerHTML = "<p class=\"error\">Invalid date!</p>";
+	if (parseInt(day) > parseInt(maxdays[origmonth])) {
+		if (errors !== "") {
+			errors+= "\n\n"
+		};
+		errors+= "That\u2019s too many days for that month.";
 	};
-	if (document.getElementById("results").value === "") {
+	if (errors === "") {
 		getChecked();
+	} else {
+		let res = document.createElement("p")
+		res.textContent = errors;
+		res.classList.add('error');
+		document.getElementById("results").appendChild(res);
 	};
-	};
+};
 var locschecked = [];
 function getChecked() {
 	let checked = document.querySelectorAll('input[type="checkbox"]:checked');
 	locschecked = Array.from(checked).map(x => x.value);
 	//https://www.joshuacolvin.net/selected-checkbox-values/
 	if (locschecked.length < 1) {
-		document.getElementById("results").textContent = "You must select at least one location";
-		document.getElementById("results").classList.add("error");
+		let res = document.createElement("p")
+		res.textContent = "You must select at least one location.";
+		res.classList.add('error');
+		document.getElementById("results").appendChild(res);
 	} else {
-		for (let i=0; i<locschecked.length; i++) {
-			prepare(locschecked[i]);
-		};
 		output();
 	};
 };
@@ -519,6 +531,7 @@ function convertDaylight(daylightoccurs) {
 	return daylightpretty;
 	}; 
 function output() {
+	let dupes = [];
 	document.getElementById('results').textContent = "";
 	let vitals_dict = {};
 	origmonth = document.getElementById('month').value;
@@ -529,10 +542,10 @@ function output() {
 	let name = [];
 	//will only work with two locations for now
 	for (let i = 0; i<locschecked.length; i++) {
-		sunrise.push(getVitals(locN[i])[0]);
-		sunset.push(getVitals(locN[i])[1]);
-		daylight.push(getVitals(locN[i])[2]);
-		name.push(getVitals(locN[i])[7]);
+		sunrise.push(getVitals(locschecked[i])[0]);
+		sunset.push(getVitals(locschecked[i])[1]);
+		daylight.push(getVitals(locschecked[i])[2]);
+		name.push(getVitals(locschecked[i])[7]);
 	};
 	vitals_dict["sunrise"] = sunrise;
 	vitals_dict["sunset"] = sunset;
@@ -561,10 +574,10 @@ function output() {
 				};
 				let diff = makeDurationPretty(getDifference(vitals_dict[order[z]][j],vitals_dict[order[z]][i]));
 				if (diff[0] === "-") {
-					diff = diff + " earlier than "+name[i];
+					diff = diff + " earlier than "+name[j];
 					diff = removeFirstChar(diff);
 				} else {
-					diff = diff + " later than "+name[i];
+					diff = diff + " later than "+name[j];
 				};
 				if (diff[0] === "N") {
 					diff = "";
@@ -581,7 +594,7 @@ function output() {
 		if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][i] === "24:00") {
 			common = "is above the horizon throughout the entire day";
 		};
-		results += "In "+name[i]+ ", on "+months[origmonth]+"\u00A0"+day+", the sun "+common+".\n\n"; 
+		results += "In "+name[i]+ ", on "+months[origmonth]+"\u00A0"+day+", the sun "+common+".\n\n";
 		};
 		//Comparing sunrise times
 		for (let i = 0; i<locschecked.length; i++) { 
@@ -598,7 +611,10 @@ function output() {
 					};
 					results += "The sun "+common+" in "+name[i]+".\n\n";
 				} else {
-					let common = " also "+doAMPM(vitals_dict[order[z]][j],z);
+					let common = doAMPM(vitals_dict[order[z]][j],z);
+					if (i === j) {
+						common = " also "+common;
+					};
 					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][j] === "00:00") {
 						common = "is also below the horizon throughout the entire day";
 					};
@@ -612,7 +628,8 @@ function output() {
 		results = results.trim();
 		let res = document.createElement("p")
 		res.textContent = results;
-		document.getElementById("results").appendChild(res);	
+		document.getElementById("results").appendChild(res);
+		dupes.push(vitals_dict["sunrise"][i], vitals_dict["sunset"][i], vitals_dict["daylight"][i]);
 			//+"+sunset+".\r\r\n\r\n"+months[origmonth]+"\u00A0"+day+" has "+daylight+" of daylight.\r\n\r\n" //\r\n\r\nThe sun also "+sunrise+" on "+sunrisepretty;+" \r\n\r\nThe sun also "+sunset+" on "+sunsetpretty+"\r\n\r\n"+daylightpretty+" the same duration of daylight.";
 		};
 	//document.getElementById("results").textContent = results;
@@ -631,10 +648,10 @@ function output() {
 			};
 			let diff = makeDurationPretty(getDifference(vitals_dict[order[2]][j],vitals_dict[order[2]][i]));
 			if (diff[0] === "-") {
-				diff = diff + " less than "+name[i];
+				diff = diff + " less than "+name[j];
 				diff = removeFirstChar(diff);
 			} else {
-				diff = diff + " more than "+name[i];
+				diff = diff + " more than "+name[j];
 			};
 			if (diff[0] === "N") {
 				diff = "";
@@ -644,7 +661,7 @@ function output() {
 			};
 		alldiff += diff;
 		};
-	results += "In "+name[i]+ ", "+months[origmonth]+"\u00A0"+day+" has "+makeDurationPretty(vitals_dict[order[2]][i],2)+" of daylight."+alldiff+".\n\n" 
+	results += "In "+name[i]+ ", "+months[origmonth]+"\u00A0"+day+" has "+makeDurationPretty(vitals_dict[order[2]][i],2)+" of daylight"+alldiff+".\n\n" 
 	};
 	//Comparing times
 	for (let i = 0; i<locschecked.length; i++) { 
@@ -654,7 +671,12 @@ function output() {
 			if (sunriseoccurs === "no other date" && i !== j) {
 					results += name[i]+ " never has "+makeDurationPretty(vitals_dict[order[2]][j],2)+" of daylight.\n\n" 
 				} else {
-					results += name[i]+" also has "+makeDurationPretty(vitals_dict[order[2]][j],2)+" of daylight on "+sunriseoccurs+".\n\n" 
+					let common = "";
+					if (i === j) {
+						common = " also";
+					};	
+					results += name[i]+common+" has "+makeDurationPretty(vitals_dict[order[2]][j],2)+" of daylight on "+sunriseoccurs+".\n\n"
+				
 				};
 		};
 	};
