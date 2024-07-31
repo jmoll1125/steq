@@ -82,21 +82,27 @@ function getDayOfYear(num) {
 	return outMonth + "\u00A0" + outDay;
 };
 function makeDaylight(sunrise, sunset) {
-	zstring = "";
-	sunrisemin = parseInt(sunrise.substring(0,2))*60 + parseInt(sunrise.substring(2,4));
-	sunsetmin = parseInt(sunset.substring(0,2))*60 + parseInt(sunset.substring(2,4));
-	if (sunsetmin < sunrisemin) {
-		sunsetmin+= 1440;
-	};//this fixes a bug with negative daylight... i think...
-	  //yes! although now we would need to set a flag for "doesn't set until the next day"...
-	  //hm. will need to tackle this later.
-	daylightmin = sunsetmin - sunrisemin;
-	if (daylightmin % 60 < 10) {
-		zstring = "0";
-	};
-	daylightmin = Math.floor(daylightmin / 60) + ":" + zstring + (daylightmin % 60);
-	if (daylightmin.length < 5) {
-		daylightmin = "0" + daylightmin;
+	if (sunrise === sunset && sunrise === "****") {
+		daylightmin = "24:00"
+	} else if (sunrise === sunset && sunrise === "----") {
+		daylightmin = "00:00"
+	} else {
+		zstring = "";
+		sunrisemin = parseInt(sunrise.substring(0,2))*60 + parseInt(sunrise.substring(2,4));
+		sunsetmin = parseInt(sunset.substring(0,2))*60 + parseInt(sunset.substring(2,4));
+		if (sunsetmin < sunrisemin) {
+			sunsetmin+= 1440;
+		};//this fixes a bug with negative daylight... i think...
+		  //yes! although now we would need to set a flag for "doesn't set until the next day"...
+		  //hm. will need to tackle this later.
+		daylightmin = sunsetmin - sunrisemin;
+		if (daylightmin % 60 < 10) {
+			zstring = "0";
+		};
+		daylightmin = Math.floor(daylightmin / 60) + ":" + zstring + (daylightmin % 60);
+		if (daylightmin.length < 5) {
+			daylightmin = "0" + daylightmin;
+		};
 	};
 	return(daylightmin);
 };
@@ -126,6 +132,7 @@ if (locN.length == 1) {
 	errors+= "You must add at least two locations to use compare mode."
 	badFields.push("add");
 };
+//future: you can add one location but no checkboxes will be displayed then because what's the point
 allErrors += errors;
 if (errors === "") {
 	document.getElementById('invalid'+locN[i]).style.display = 'none';
@@ -305,30 +312,20 @@ function getChecked() {
 	let checked = document.querySelectorAll('input[type="checkbox"]:checked');
 	locschecked = Array.from(checked).map(x => x.value);
 	//https://www.joshuacolvin.net/selected-checkbox-values/
-	if (locschecked.length < 2) {
-		document.getElementById("results").innerHTML = "<p class=\"error\">You must select at least two locations.</p>";
-	}
+	if (locschecked.length < 1) {
+		document.getElementById("results").textContent = "You must select at least one location";
+		document.getElementById("results").classList.add("error");
+	} else {
 		for (let i=0; i<locschecked.length; i++) {
 			prepare(locschecked[i]);
 		};
 		output();
-		for (let i=0; i<locschecked.length; i++) {
-			console.log(getVitals(locschecked[i]))
-			for (let j=0; j<locschecked.length; j++) {
-			console.log(i, j)
-			if(i===j) {
-				continue;
-			};
-			console.log(search(locschecked[i],locschecked[j],0))
-			console.log(search(locschecked[i],locschecked[j],1))
-			console.log(search(locschecked[i],locschecked[j],2))
-			};
-			//still broken, but we'll have to refactor the whole thing, because we're going to be comparing... so idek if processing multiple times will be the move. 
-			//what it will end up being is generating a steq file for each location and then finding the sunrise and sunset time for each. THEN we'll have to go back and do the comparison. so i'll have to rewrite it from the ground up...
-			//maintaining two seperate codebases is going to be a nightmare lol i'm not sure this is such a good idea
-			//i think i spent an hour rewriting this when the issue was a missing { but i think the codebase is better off for it!
 	};
 };
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+//https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript
 /* function getFileandTimes(N) {
 	let loaded = generate(lat, lon, tz, dst, year);
 	let sunrise = loaded //
@@ -482,7 +479,7 @@ function convertDaylight(daylightoccurs) {
 	var daylightcommas = daylightoccurs.length - 1;
 		daylightoutputstr = "";
 		if (daylightoccurs.length == 0) {
-			daylightoutputstr = "No other date"
+			daylightoutputstr = "no other date"
 			daylightcommas = 0;
 		} else {
 			for (i=0; i < daylightoccurs.length; i++) {
@@ -492,7 +489,7 @@ function convertDaylight(daylightoccurs) {
 		//
 		//
 		//
-		if (daylightoutputstr != "No other date") {
+		if (daylightoutputstr != "no other date") {
 			daylightoutputstr = daylightoutputstr.slice(0, -2) + '';
 		};
 		//Making our strings pretty
@@ -507,16 +504,8 @@ function convertDaylight(daylightoccurs) {
 			};
 		};
 		daylightpretty = daylightpretty.join("");
-		//locales for am/pm? we need to account for 0000, and rollovers.
-		//daylight
-	/* } else {
-		if (sunrise === "----") {
-			sunrise = "below";
-			daylight = "0\u00A0hours 0\u00A0minutes";
-		} else {
-			sunrise = "above"
-			daylight = "24\u00A0hours 0\u00A0minutes";
-		};
+		/*
+		/*
 	if (sunrisepretty === "no other date!") {
 		sunrisepretty = "No other days are like this!"
 	} else {
@@ -562,7 +551,7 @@ function output() {
 	for (let z = 0; z<2; z++) {
 		let results="";
 		let newheader = document.createElement("h2")
-		newheader.textContent = order[z]
+		newheader.textContent = capitalize(order[z])
 		document.getElementById("results").appendChild(newheader);
 		for (let i = 0; i<locschecked.length; i++) { 
 			let alldiff = "";
@@ -585,7 +574,14 @@ function output() {
 				};
 			alldiff += diff;
 			};
-		results += "In "+name[i]+ ", on "+months[origmonth]+"\u00A0"+day+", the sun "+doAMPM(vitals_dict[order[z]][i],z)+alldiff+".\n\n" 
+		let common = doAMPM(vitals_dict[order[z]][i],z)+alldiff;
+		if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][i] === "00:00") {
+			common = "is below the horizon throughout the entire day";
+		};
+		if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][i] === "24:00") {
+			common = "is above the horizon throughout the entire day";
+		};
+		results += "In "+name[i]+ ", on "+months[origmonth]+"\u00A0"+day+", the sun "+common+".\n\n"; 
 		};
 		//Comparing sunrise times
 		for (let i = 0; i<locschecked.length; i++) { 
@@ -593,9 +589,23 @@ function output() {
 				sunriseoccurs = search(locschecked[i],locschecked[j],z) //zclutch!!
 				sunriseoccurs = intoDates(sunriseoccurs);
 				if (sunriseoccurs === "no other date!" && i !== j) {
-					results += "The sun never "+doAMPM(vitals_dict[order[z]][j],z)+" in "+name[i]+".\n\n";
+					let common = " never "+doAMPM(vitals_dict[order[z]][j],z);
+					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][j] === "00:00") {
+						common = "is never below the horizon throughout the entire day";
+					};
+					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][j] === "24:00") {
+						common = "is never above the horizon throughout the entire day";
+					};
+					results += "The sun "+common+" in "+name[i]+".\n\n";
 				} else {
-					results += "The sun also "+doAMPM(vitals_dict[order[z]][j],z)+" in "+name[i]+" on "+sunriseoccurs+"\n\n";
+					let common = " also "+doAMPM(vitals_dict[order[z]][j],z);
+					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][j] === "00:00") {
+						common = "is also below the horizon throughout the entire day";
+					};
+					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][j] === "24:00") {
+						common = "is also above the horizon throughout the entire day";
+					};
+					results += "The sun "+common+" in "+name[i]+" on "+sunriseoccurs+"\n\n";
 				};
 			};
 		};
@@ -611,7 +621,7 @@ function output() {
 	//
 	let results="";
 	let newheader = document.createElement("h2")
-	newheader.textContent = order[2]
+	newheader.textContent = "Daylight";
 	document.getElementById("results").appendChild(newheader);
 	for (let i = 0; i<locschecked.length; i++) { 
 		let alldiff = "";
@@ -636,12 +646,12 @@ function output() {
 		};
 	results += "In "+name[i]+ ", "+months[origmonth]+"\u00A0"+day+" has "+makeDurationPretty(vitals_dict[order[2]][i],2)+" of daylight."+alldiff+".\n\n" 
 	};
-	//Comparing sunrise times
+	//Comparing times
 	for (let i = 0; i<locschecked.length; i++) { 
 		for(let j = 0; j<locschecked.length; j++) {
 			sunriseoccurs = search(locschecked[i],locschecked[j],2) //zclutch!!
 			sunriseoccurs = convertDaylight(sunriseoccurs);
-			if (sunriseoccurs === "No other date" && i !== j) {
+			if (sunriseoccurs === "no other date" && i !== j) {
 					results += name[i]+ " never has "+makeDurationPretty(vitals_dict[order[2]][j],2)+" of daylight.\n\n" 
 				} else {
 					results += name[i]+" also has "+makeDurationPretty(vitals_dict[order[2]][j],2)+" of daylight on "+sunriseoccurs+".\n\n" 
