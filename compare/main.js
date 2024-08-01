@@ -1,5 +1,4 @@
 //March 26, 2023, February 22-23, 2024, July 29-31, 2024
-//Used to be steqintl3b6-4 (what a terrible name); now we've got multiple locations!
 var locN = [];
 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 function add() {
@@ -147,9 +146,6 @@ document.getElementById(badFields[0]).focus();
 };
 };
 if (allErrors == "") {
-	for (let i=0; i<locN.length; i++) {
-			prepare(locN[i]);
-		};
 	hideEdits();
 };
 };
@@ -158,16 +154,7 @@ var sunsets;
 var daylightduration;
 //var loaded; //evil...
 var maxdays;
-//Former loading script.
 document.getElementById("year").value = (new Date().getFullYear()).toString();
-//this is where the stuff was defined
-//okay it still doesn't support ly's, which we will need to pull out the data correctly. -done
-//oh and i did forget but... **** and ----! -done, if they're in pairs
-//but overall, today has been 100% worth it. I really do like this, how it's going...
-//make a back button until i get local storage to work. - update: it wouldn't work. is hidden until you submit for the first time? Try a new location
-//we will still need to check for sunsets before sunrises, though it is possible that may remove the need to shuffle data around.
-//also it gets the plurals for the daylight right
-//IE accepts "" for year. We need to fix year detection but I'm just too tired
 var checkdate;
 function getDifference(a, b) {
 	let zstring = ""
@@ -331,6 +318,9 @@ function getChecked() {
 		res.classList.add('error');
 		document.getElementById("results").appendChild(res);
 	} else {
+		for (let i=0; i<locN.length; i++) {
+			prepare(locN[i]);
+		};
 		output();
 	};
 };
