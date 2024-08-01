@@ -525,14 +525,15 @@ function output() {
 				};
 				let diff = makeDurationPretty(getDifference(vitals_dict[order[z]][j],vitals_dict[order[z]][i]));
 				if (diff[0] === "-") {
-					diff = diff + " earlier than "+name[j];
+					diff = diff + " earlier than ";
 					diff = removeFirstChar(diff);
 				} else {
-					diff = diff + " later than "+name[j];
+					diff = diff + " later than ";
 				};
-				if (diff === "0 minutes later than ") {
-					diff = "same as "+name[j];
+				if (diff === "0\u00A0minutes later than ") {
+					diff = "same as ";
 				};
+				diff += name[j];
 				if (diff[0] === "N") {
 					diff = "";
 				};
@@ -607,14 +608,15 @@ function output() {
 			};
 			let diff = makeDurationPretty(getDifference(vitals_dict["daylight"][j],vitals_dict["daylight"][i]));
 			if (diff[0] === "-") {
-				diff = diff + " less than "+name[j];
+				diff = diff + " less than ";
 				diff = removeFirstChar(diff);
 			} else {
-				diff = diff + " more than "+name[j]; 
+				diff = diff + " more than "; 
 			};
-			if (diff === "0 minutes more than ") {
-					diff = "same as "+name[j];
+			if (diff === "0\u00a0minutes more than ") { //!!
+					diff = "same as ";
 			};
+			diff += name[j];
 			if (diff[0] === "N") {
 				diff = "";
 			};
