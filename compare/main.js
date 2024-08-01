@@ -598,30 +598,31 @@ function output() {
 		};
 		//Comparing sunrise times
 		for (let i = 0; i<locschecked.length; i++) { 
+		let doneMyself = 0;
 			for(let j = 0; j<locschecked.length; j++) {
-				sunriseoccurs = search(locschecked[i],locschecked[j],z) //zclutch!!
+				sunriseoccurs = search(locschecked[j],locschecked[i],z) //zclutch!!
 				sunriseoccurs = intoDates(sunriseoccurs);
 				if (sunriseoccurs === "no other date!" && i !== j) {
-					let common = " never "+doAMPM(vitals_dict[order[z]][j],z);
-					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][j] === "00:00") {
+					let common = " never "+doAMPM(vitals_dict[order[z]][i],z);
+					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][i] === "00:00") {
 						common = "is never below the horizon throughout the entire day";
 					};
-					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][j] === "24:00") {
+					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][i] === "24:00") {
 						common = "is never above the horizon throughout the entire day";
 					};
-					results += "The sun "+common+" in "+name[i]+".\n\n";
+					results += "The sun "+common+" in "+name[j]+".\n\n";
 				} else {
-					let common = doAMPM(vitals_dict[order[z]][j],z);
+					let common = doAMPM(vitals_dict[order[z]][i],z);
 					if (i === j) {
 						common = " also "+common;
 					};
-					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][j] === "00:00") {
+					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][i] === "00:00") {
 						common = "is also below the horizon throughout the entire day";
 					};
-					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][j] === "24:00") {
+					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][i] === "24:00") {
 						common = "is also above the horizon throughout the entire day";
 					};
-					results += "The sun "+common+" in "+name[i]+" on "+sunriseoccurs+"\n\n";
+					results += "The sun "+common+" in "+name[j]+" on "+sunriseoccurs+"\n\n";
 				};
 			};
 		};
@@ -666,16 +667,16 @@ function output() {
 	//Comparing times
 	for (let i = 0; i<locschecked.length; i++) { 
 		for(let j = 0; j<locschecked.length; j++) {
-			sunriseoccurs = search(locschecked[i],locschecked[j],2) //zclutch!!
+			sunriseoccurs = search(locschecked[j],locschecked[i],2) //zclutch!!
 			sunriseoccurs = convertDaylight(sunriseoccurs);
 			if (sunriseoccurs === "no other date" && i !== j) {
-					results += name[i]+ " never has "+makeDurationPretty(vitals_dict[order[2]][j],2)+" of daylight.\n\n" 
+					results += name[j]+ " never has "+makeDurationPretty(vitals_dict[order[2]][i],2)+" of daylight.\n\n" 
 				} else {
 					let common = "";
 					if (i === j) {
 						common = " also";
 					};	
-					results += name[i]+common+" has "+makeDurationPretty(vitals_dict[order[2]][j],2)+" of daylight on "+sunriseoccurs+".\n\n"
+					results += name[j]+common+" has "+makeDurationPretty(vitals_dict[order[2]][i],2)+" of daylight on "+sunriseoccurs+".\n\n"
 				
 				};
 		};
