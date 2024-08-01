@@ -530,7 +530,7 @@ function output() {
 				} else {
 					diff = diff + " later than "+name[j];
 				};
-				if (diff = "0 minutes later than ") {
+				if (diff === "0 minutes later than ") {
 					diff = "same as "+name[j];
 				};
 				if (diff[0] === "N") {
@@ -612,7 +612,7 @@ function output() {
 			} else {
 				diff = diff + " more than "+name[j]; 
 			};
-			if (diff = "0 minutes more than ") {
+			if (diff === "0 minutes more than ") {
 					diff = "same as "+name[j];
 			};
 			if (diff[0] === "N") {
