@@ -1,4 +1,4 @@
-//March 26, 2023, February 22-23, 2024, July 29-30, 2024
+//March 26, 2023, February 22-23, 2024, July 29-31, 2024
 //Used to be steqintl3b6-4 (what a terrible name); now we've got multiple locations!
 var locN = [];
 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -437,17 +437,16 @@ if (sunrise === "****" || sunrise === "----") {
 			};
 		};
 		if (rs) {
-			polarstr = "The next sunrise is on "
+			polarstr = " The next sunset is on "
 		} else {
-			polarstr = "The next sunset is on "
+			polarstr = " The next sunrise is on "
 		};
 		polarstr += getDayOfYear(polarEnd);
-		polarstr += "."
 };
 return polarstr;
 };
 //home should be the list... that way we don't call get Vitals more than once
-function search(home, traveler,selfcompare) {
+function search(home, traveler, selfcompare) {
 	//as elsewhere using sunrise as alias for input
 	sunrises = home;
 	sunrise = traveler
@@ -577,10 +576,10 @@ function output() {
 			};
 		let common = doAMPM(vitals_dict[order[z]][i],z)+alldiff;
 		if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][i] === "00:00") {
-			common = "is below the horizon throughout the entire day";
+			common = "is below the horizon throughout the entire day."+nextRS(0,vitals_dict[order[z+2]][i]);
 		};
 		if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][i] === "24:00") {
-			common = "is above the horizon throughout the entire day";
+			common = "is above the horizon throughout the entire day."+nextRS(1,vitals_dict[order[z+2]][i]);
 		};
 		results += "In "+name[i]+ ", on "+months[origmonth]+"\u00A0"+day+", the sun "+common+".\n\n";
 		};
