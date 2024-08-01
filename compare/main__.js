@@ -338,9 +338,22 @@ function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 //https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript
+/* function getFileandTimes(N) {
+	let loaded = generate(lat, lon, tz, dst, year);
+	let sunrise = loaded //
+	let sunset = loaded //
+	let daylight = makeDaylight(sunrise, sunset);
+	return [sunrise, sunset, daylight, loaded]
+}; */
 var ly;
 let locs_dict = {}
 let vitals_dict = {}
+/* locs_dict[locN[i]] = 
+for (i=0; i<locN.length; i++) {
+	eval("var loaded"+"locN[i]"); //probably do this better
+	//trying to create Loaded variables for each location so they don't have to be regenerated (and because having them do so was throwing errors) but i just can't figure it out :(
+	//so idek if the control flow is working but i think it will once i figure this out
+}; //create global vars i think */
 function prepare(N) {
 	var name = document.getElementById('name'+N).value;
 	var lat = parseFloat(document.getElementById('lat'+N).value);
@@ -349,6 +362,7 @@ function prepare(N) {
 	var dst = document.getElementById('dst'+N).value;
 	var year = document.getElementById('year').value;
 	let loaded = generate(lat, lon, tz, dst, year);
+	//loaded.split(" ");
 	locs_dict[N] = loaded;
 };
 function removeFirstChar(str) {
@@ -374,11 +388,13 @@ loaded = loaded.split(" ");
 		daylightduration.push(makeDaylight(sunrises[i], sunsets[i]));
 	};
 	//
-	//
-	//
+	//ly stuff was here
+	//convert to numbers
+	//this is gonna mess up when we do STEQ-POL!! and dst! we need to account for midnights and rollovers
 	for (i=0; i < sunrises.length; i++) {
 		strtemp = sunrises[i]
 		if (strtemp !== "****" && strtemp !== "----") {
+			//strtemp = parseInt(strtemp)
 		} else {
 			if (strtemp !== sunsets[i]) {
 				strtemp = "L" + strtemp.substring(1)
@@ -393,6 +409,7 @@ loaded = loaded.split(" ");
 	for (i=0; i < sunsets.length; i++) {
 		strtemp = sunsets[i]
 		if (strtemp !== "****" && strtemp !== "----") {
+			//strtemp = parseInt(strtemp)
 		} else {
 			if (strtemp !== sunrises[i]) {
 				strtemp = "L" + strtemp.substring(1)
@@ -448,6 +465,7 @@ function search(home, traveler, selfcompare) {
 		};
 		return(sunriseoccurs);
 };
+// to do: finish output // make sure it throws errors when invalid date, year etc. 
 function convertDaylight(daylightoccurs) {
 	var daylightcommas = daylightoccurs.length - 1;
 		daylightoutputstr = "";
@@ -459,6 +477,9 @@ function convertDaylight(daylightoccurs) {
 				daylightoutputstr += getDayOfYear(daylightoccurs[i])+", ";
 			};
 		};
+		//
+		//
+		//
 		if (daylightoutputstr != "no other date") {
 			daylightoutputstr = daylightoutputstr.slice(0, -2) + '';
 		};
@@ -474,6 +495,18 @@ function convertDaylight(daylightoccurs) {
 			};
 		};
 		daylightpretty = daylightpretty.join("");
+		/*
+		/*
+	if (sunrisepretty === "no other date!") {
+		sunrisepretty = "No other days are like this!"
+	} else {
+		if (sunriseoccurs.length == 1) {
+			sunrisepretty = "The other day like this is "+sunrisepretty;
+		} else {
+			sunrisepretty = "The other days like this are "+sunrisepretty;
+		};
+	}; 
+	}; */
 	return daylightpretty;
 	}; 
 function output() {
@@ -504,13 +537,16 @@ function output() {
 	vitals_dict["sunsets"] = sunsets;
 	vitals_dict["daylights"] = daylights;
 	vitals_dict["name"] = name;
+		//daylight pretty
+		//daylight = makeDurationPretty(daylight[i]);
 		//final output
-			//This line may be used to display the results slightly differently for the first location, but i'll delay implementation for now. // results += "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun "+sunrise+" and "+sunset+".\r\r\n\r\n"+months[origmonth]+"\u00A0"+day+" has "+daylight+" of daylight.\r\n\r\n" //\r\n\r\nThe sun also "+sunrise+" on "+sunrisepretty;+" \r\n\r\nThe sun also "+sunset+" on "+sunsetpretty+"\r\n\r\n"+daylightpretty+" the same duration of daylight.";
+			//This line will be used to display the results slightly differently for the first location, but i'll delay implementation for now. // results += "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun "+sunrise+" and "+sunset+".\r\r\n\r\n"+months[origmonth]+"\u00A0"+day+" has "+daylight+" of daylight.\r\n\r\n" //\r\n\r\nThe sun also "+sunrise+" on "+sunrisepretty;+" \r\n\r\nThe sun also "+sunset+" on "+sunsetpretty+"\r\n\r\n"+daylightpretty+" the same duration of daylight.";
 	//Sunrise times for each
 	order = ["sunrise","sunset","sunrises","sunsets"];
 	//This is me being a bit lazy. But I'm not willing to run the whole test multiple times so here
 	//Basically z is a standin for "sunrise" (0) or "sunset" (1) so that we can run the comparison multiple times
 	//I'd do it for daylight too but the format is just too different
+	//!! There is zero polar support here at all!
 	for (let z = 0; z<2; z++) {
 		let results="";
 		let dupes = [];
@@ -592,7 +628,6 @@ function output() {
 	//daylight
 	//
 	let results="";
-	let dupes = [];
 	let newheader = document.createElement("h2")
 	newheader.textContent = "Daylight";
 	document.getElementById("results").appendChild(newheader);
@@ -617,27 +652,23 @@ function output() {
 			};
 		alldiff += diff;
 		};
-	results += "In "+name[i]+ ", "+months[origmonth]+"\u00A0"+day+" has "+makeDurationPretty(vitals_dict["daylight"][i])+" of daylight"+alldiff+".\n\n" 
+	results += "In "+name[i]+ ", "+months[origmonth]+"\u00A0"+day+" has "+makeDurationPretty(vitals_dict["daylight"][i],2)+" of daylight"+alldiff+".\n\n" 
 	};
 	//Comparing times
 	for (let i = 0; i<locschecked.length; i++) { 
-		if (dupes.indexOf(vitals_dict["daylight"][i]) !== -1) {
-			continue;
-		};
 		for(let j = 0; j<locschecked.length; j++) {
-			sunriseoccurs = search(vitals_dict["daylights"][j],vitals_dict["daylight"][i],i===j)
+			sunriseoccurs = search(vitals_dict["daylights"][j],vitals_dict["daylight"][i],i===j) //zclutch!!
 			sunriseoccurs = convertDaylight(sunriseoccurs);
 			if (sunriseoccurs === "no other date" && i !== j) {
-					results += name[j]+ " never has "+makeDurationPretty(vitals_dict["daylight"][i])+" of daylight.\n\n" 
+					results += name[j]+ " never has "+makeDurationPretty(vitals_dict["daylight"][i],2)+" of daylight.\n\n" 
 				} else {
 					let common = "";
-					if (i === j || vitals_dict["daylight"][i] === vitals_dict["daylight"][j]) {
-						also = " also "
-						common = also+common;
-					};
-					results += name[j]+common+" has "+makeDurationPretty(vitals_dict["daylight"][i])+" of daylight on "+sunriseoccurs+".\n\n"
+					if (i === j) {
+						common = " also";
+					};	
+					results += name[j]+common+" has "+makeDurationPretty(vitals_dict["daylight"][i],2)+" of daylight on "+sunriseoccurs+".\n\n"
+				
 				};
-			dupes.push(vitals_dict["daylight"][i]);
 		};
 	};
 	results = results.trim();
@@ -645,3 +676,11 @@ function output() {
 	res.textContent = results;
 	document.getElementById("results").appendChild(res);	
 };
+		//	sunriseoccurs = search(
+//
+	//
+		//DAYLIGHT OUTPUT
+		//
+		
+	/* document.getElementById("results").textContent = "In "+name+ ", on "+months[origmonth]+"\u00A0"+day+", the sun is " + sunrise + " the horizon throughout the entire day.\r\n\r\nTherefore, "+months[origmonth]+"\u00A0"+day+" has "+ daylight + " of daylight.\r\n\r\n"+sunrisepretty+"\r\n\r\n"+polarstr;
+	}; */
