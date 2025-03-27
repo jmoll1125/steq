@@ -45,7 +45,7 @@ select.mockbutton, input.mockbutton {padding: 0px;}
 button.mockbutton {padding: 3px; border-radius: 5px; cursor: pointer;}	
 select.mockbutton, input.mockbutton, button.mockbutton {border-style: solid; border-color: #ddd; margin-bottom: 5px; margin-top: 5px; display: inline-block;}	
 .ib {display: inline-block;}	
-#invalid {display:none;}	
+#invalid {display:none; white-space: pre-line;}	
 #dirs {display:none;}
 #pdata {display:none;}		
 ul {list-style-type: none;}	
