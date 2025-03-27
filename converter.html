@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<!-- 3.25.23 and 2.23.24 -->
+<!-- 3.25.23, 2.23.24, 3.27.25-->
 <head>
 <title>STEQ file generator | Sun Times Equivalence Thing</title>
 <link rel="stylesheet" href="steq.css">
@@ -58,173 +58,188 @@
 <option value="eu">eu</option>
 <option value="no">no</option>
 </select></span><br>
-<button id="gen" class="mockbutton" onclick="validate();">Go</button>
-<br><br>When you click Go, the file will automatically be downloaded.
+<button id="gen" class="mockbutton" onclick="validate(0);">Download file</button>
+<button id="prev" class="mockbutton" onclick="validate(1);">Preview file</button>
 </div>
 <p id="invalid" class="error"></p>
+<textarea id="pdata" class="mockbutton"></textarea>
 <p><a href="archive/index.html">Back to the archive</a></p>
 </div>
 <script src="archive/gen.js"></script>
 <script src="archive/dst.js"></script>
 <script src="archive/computeSunrise2.js"></script>
 <script>
-function save(filename, data) {
-    const blob = new Blob([data], {type: 'text'});
-    if(window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveBlob(blob, filename);
-    }
-    else{
-        const elem = window.document.createElement('a');
-        elem.href = window.URL.createObjectURL(blob);
-        elem.download = filename;        
-        document.body.appendChild(elem);
-        elem.click();        
-        document.body.removeChild(elem);
-		window.URL.revokeObjectURL(blob);
-    }
+function save(filename, data) {		
+		const blob = new Blob([data], {type: 'text'});
+		if(window.navigator.msSaveOrOpenBlob) {
+			window.navigator.msSaveBlob(blob, filename);
+		}
+		else{
+			const elem = window.document.createElement('a');
+			elem.href = window.URL.createObjectURL(blob);
+			elem.download = filename;        
+			document.body.appendChild(elem);
+			elem.click();        
+			document.body.removeChild(elem);
+			window.URL.revokeObjectURL(blob);
+		}
 } //https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server/18197341#18197341
-var name;
-function validate() {
-name = document.getElementById('name').value;
-var lat = parseFloat(document.getElementById('lat').value);
-var lon = parseFloat(document.getElementById('lon').value);
-var tz = parseFloat(document.getElementById('tz').value);
-var dst = document.getElementById('dst').value;
-var type = document.getElementById('type').value;
-if (name === "") {
-	name = lat + ", " + lon;
+function preview(data) {
+	document.getElementById("invalid").textContent = "Save the below text as a plain-text file with the extention .steq. You must save the text exactly as displayed (i.e. include the trailing newline) for the Sun Times Equivalence Thing to accept your file.";
+	document.getElementById("pdata").value = data;
+	document.getElementById('invalid').style.display = 'block';
+	document.getElementById('pdata').style.display = 'block';
+	//maybe don't create them but rather put them in and change their data
+	//make sure that textarea gets resized
 	};
-var errors = "";
-if (isNaN(lat) || lat < -90 || lat > 90 ) {
-errors+= "Latitude must be between -90 and 90.<br>";
-};
-if (isNaN(lon) || lon < -180 || lon > 180) {
-errors+= "Longitude must be between -180 and 180.<br>";
-};
-if (isNaN(tz) || tz < -12 || tz > 14) {
-errors+= "Time zone must be between -12 and 14. (Use decimals for half hours.)<br>";
-};
-if (errors === "") {
-display(make(lat, lon, tz, dst, 2024, type));
-} else {
-document.getElementById("invalid").innerHTML = errors;
-document.getElementById('invalid').style.display = 'block';
-};
+var name;
+function validate(pv) {
+	name = document.getElementById('name').value;
+	var lat = parseFloat(document.getElementById('lat').value);
+	var lon = parseFloat(document.getElementById('lon').value);
+	var tz = parseFloat(document.getElementById('tz').value);
+	var dst = document.getElementById('dst').value;
+	var type = document.getElementById('type').value;
+	if (name === "") {
+		name = lat + ", " + lon;
+		};
+	var errors = "";
+	if (isNaN(lat) || lat < -90 || lat > 90 ) {
+	errors+= "Latitude must be between -90 and 90.<br>";
+	};
+	if (isNaN(lon) || lon < -180 || lon > 180) {
+	errors+= "Longitude must be between -180 and 180.<br>";
+	};
+	if (isNaN(tz) || tz < -12 || tz > 14) {
+	errors+= "Time zone must be between -12 and 14. (Use decimals for half hours.)<br>";
+	};
+	if (errors === "") {
+	display(make(lat, lon, tz, dst, 2024, type), pv);
+	} else {
+	document.getElementById("invalid").innerHTML = errors;
+	document.getElementById('invalid').style.display = 'block';
+	};
 };
 var file = "";
 function make(lat, lon, tz, dst, year, type) {
-var name = document.getElementById('name').value;
-if (name === "") {
-	name = lat + ", " + lon;
-	};
-var raw = generate(lat, lon, tz, "no", year);
-polarFlag = 0;
-if (raw.toString().indexOf("*") !== -1 || raw.toString().indexOf("-") !== -1) {
-	polarFlag = 1;
-	};
-if (type === "1") {
-	name = name.replace(/ /g, "&")
-	file = "STEQ-NDL " + name + " " + raw + dst;
-	};
-if (type === "0") {
-	name = name.replace(/ /g, "&")
-	file = "STEQ-POL " + name + " " + raw + dst; //only other differences are "NULL" and "d" but... they're not supported by this...
-	};
-if (type === "2") {
-	name = name.replace(/ /g, "&")
-	var loaded = raw.split(" ")
-	sunrises = loaded.slice(0, 366);
-	sunsets = loaded.slice(366, 732);
-	//make daylight, pulled from steqintl3b4
-	var sunrisemin;
-	var sunsetmin;
-	var daylightmin;
-	var zstring;
-	var dstrule;
-	var daylightduration = [];
-	for (i=0; i<sunrises.length; i++) {
-		zstring = "";
-		sunrisemin = parseInt(sunrises[i].substring(0,2))*60 + parseInt(sunrises[i].substring(2,4));
-		sunsetmin = parseInt(sunsets[i].substring(0,2))*60 + parseInt(sunsets[i].substring(2,4));
-		daylightmin = sunsetmin - sunrisemin; 
-		if (daylightmin < 0) {
-			daylightmin = 1440 - Math.abs(daylightmin);
-			}; //this is to prevent negative daylight. i was playing around and had a location with a wildly wrong time zone
-		if (daylightmin % 60 < 10) {
-			zstring = "0";
-			};
-		daylightmin = Math.floor(daylightmin / 60) + ":" + zstring + (daylightmin % 60);
-		if (daylightmin.length < 5) {
-			daylightmin = "0" + daylightmin;
-			};
-		daylightduration += daylightmin + " ";
+	var name = document.getElementById('name').value;
+	if (name === "") {
+		name = lat + ", " + lon;
 		};
-	file = "STEQ-DYN " + name + " " + raw + daylightduration + dst;
+	var raw = generate(lat, lon, tz, "no", year);
+	polarFlag = 0;
+	if (raw.toString().indexOf("*") !== -1 || raw.toString().indexOf("-") !== -1) {
+		polarFlag = 1;
+		};
+	if (type === "1") {
+		name = name.replace(/ /g, "&")
+		file = "STEQ-NDL " + name + " " + raw + dst;
+		};
+	if (type === "0") {
+		name = name.replace(/ /g, "&")
+		file = "STEQ-POL " + name + " " + raw + dst; //only other differences are "NULL" and "d" but... they're not supported by this...
+		};
+	if (type === "2") {
+		name = name.replace(/ /g, "&")
+		var loaded = raw.split(" ")
+		sunrises = loaded.slice(0, 366);
+		sunsets = loaded.slice(366, 732);
+		//make daylight, pulled from steqintl3b4
+		var sunrisemin;
+		var sunsetmin;
+		var daylightmin;
+		var zstring;
+		var dstrule;
+		var daylightduration = [];
+		for (i=0; i<sunrises.length; i++) {
+			zstring = "";
+			sunrisemin = parseInt(sunrises[i].substring(0,2))*60 + parseInt(sunrises[i].substring(2,4));
+			sunsetmin = parseInt(sunsets[i].substring(0,2))*60 + parseInt(sunsets[i].substring(2,4));
+			daylightmin = sunsetmin - sunrisemin; 
+			if (daylightmin < 0) {
+				daylightmin = 1440 - Math.abs(daylightmin);
+				}; //this is to prevent negative daylight. i was playing around and had a location with a wildly wrong time zone
+			if (daylightmin % 60 < 10) {
+				zstring = "0";
+				};
+			daylightmin = Math.floor(daylightmin / 60) + ":" + zstring + (daylightmin % 60);
+			if (daylightmin.length < 5) {
+				daylightmin = "0" + daylightmin;
+				};
+			daylightduration += daylightmin + " ";
+			};
+		file = "STEQ-DYN " + name + " " + raw + daylightduration + dst;
+		};
+	if (type === "3") {
+	name = name.replace(/ /g, "&")
+	var dyn = make(lat, lon, tz, dst, 2024, "2");
+	var loaded = dyn.split(" ");
+	sunrises = loaded.slice(2, 368);
+	sunsets = loaded.slice(368, 734);
+	daylight = loaded.slice(734, 1100);
+	var sunriseh = [];
+	var sunrisem = [];
+	for (i=0; i<sunrises.length; i++) {
+	sunriseh.push(sunrises[i].slice(0, 2));
+	sunrisem.push(sunrises[i].slice(2, 4));
+	if (sunriseh[i].slice(0, 1) === "0") {
+		sunriseh[i] = sunriseh[i].slice(1, 2);
+		};
+	if (parseInt(sunriseh[i]) < 12) {
+		sunrisem[i] = ":"+sunrisem[i]+"&AM";
+		} else {
+		sunrisem[i] = ":"+sunrisem[i]+"&PM";
+		sunriseh[i] = (parseInt(sunriseh[i])-12).toString();
+		};
 	};
-if (type === "3") {
-name = name.replace(/ /g, "&")
-var dyn = make(lat, lon, tz, dst, 2024, "2");
-var loaded = dyn.split(" ");
-sunrises = loaded.slice(2, 368);
-sunsets = loaded.slice(368, 734);
-daylight = loaded.slice(734, 1100);
-var sunriseh = [];
-var sunrisem = [];
-for (i=0; i<sunrises.length; i++) {
-sunriseh.push(sunrises[i].slice(0, 2));
-sunrisem.push(sunrises[i].slice(2, 4));
-if (sunriseh[i].slice(0, 1) === "0") {
-	sunriseh[i] = sunriseh[i].slice(1, 2);
+	var sunseth = [];
+	var sunsetm = [];
+	for (i=0; i<sunsets.length; i++) {
+	sunseth.push(sunsets[i].slice(0, 2));
+	sunsetm.push(sunsets[i].slice(2, 4));
+	if (sunseth[i].slice(0, 1) === "0") {
+		sunseth[i] = sunseth[i].slice(1, 2);
+		};
+	if (parseInt(sunseth[i]) < 12) {
+		sunsetm[i] = ":"+sunsetm[i]+"&AM";
+		} else {
+		sunsetm[i] = ":"+sunsetm[i]+"&PM";
+		sunseth[i] = (parseInt(sunseth[i])-12).toString();
+		};
 	};
-if (parseInt(sunriseh[i]) < 12) {
-	sunrisem[i] = ":"+sunrisem[i]+"&AM";
-	} else {
-	sunrisem[i] = ":"+sunrisem[i]+"&PM";
-	sunriseh[i] = (parseInt(sunriseh[i])-12).toString();
+	for (i=0; i<daylight.length; i++) {
+		if (daylight[i].slice(0, 1) === "0") {
+		daylight[i] = daylight[i].slice(1, 5);
+		};
+	daylight[i] = daylight[i].replaceAll(":", "&hours&");
+	daylight[i] = daylight[i] + "&minutes"
 	};
+	console.log(sunriseh, sunrisem, sunseth, sunsetm, daylight);
+	file = "STEQ-JUL " + name + " " + sunriseh.toString().replaceAll(","," ") + " " + sunrisem.toString().replaceAll(","," ") + " " + sunseth.toString().replaceAll(","," ") + " " + sunsetm.toString().replaceAll(","," ") + " " + daylight.toString().replaceAll(","," ") + " " + dst;
+	}
+	if (type === "4") {
+	var jul = make(lat, lon, tz, dst, 2024, "3");
+	file = jul.slice(9,jul.length);
+	};
+	return file;
 };
-var sunseth = [];
-var sunsetm = [];
-for (i=0; i<sunsets.length; i++) {
-sunseth.push(sunsets[i].slice(0, 2));
-sunsetm.push(sunsets[i].slice(2, 4));
-if (sunseth[i].slice(0, 1) === "0") {
-	sunseth[i] = sunseth[i].slice(1, 2);
-	};
-if (parseInt(sunseth[i]) < 12) {
-	sunsetm[i] = ":"+sunsetm[i]+"&AM";
-	} else {
-	sunsetm[i] = ":"+sunsetm[i]+"&PM";
-	sunseth[i] = (parseInt(sunseth[i])-12).toString();
-	};
-};
-for (i=0; i<daylight.length; i++) {
-	if (daylight[i].slice(0, 1) === "0") {
-	daylight[i] = daylight[i].slice(1, 5);
-	};
-daylight[i] = daylight[i].replaceAll(":", "&hours&");
-daylight[i] = daylight[i] + "&minutes"
-};
-console.log(sunriseh, sunrisem, sunseth, sunsetm, daylight);
-file = "STEQ-JUL " + name + " " + sunriseh.toString().replaceAll(","," ") + " " + sunrisem.toString().replaceAll(","," ") + " " + sunseth.toString().replaceAll(","," ") + " " + sunsetm.toString().replaceAll(","," ") + " " + daylight.toString().replaceAll(","," ") + " " + dst;
-}
-if (type === "4") {
-var jul = make(lat, lon, tz, dst, 2024, "3");
-file = jul.slice(9,jul.length);
-};
-return file;
-};
-function display(output) {
+function display(output, pv) {
 if (polarFlag === 1) {
 document.getElementById("invalid").style.display = "block";
+document.getElementById('pdata').style.display = 'none';
 document.getElementById("invalid").innerHTML = "Your location has one or more days where the sun is above or below the horizon for the entire day. No versions of the Sun Times Equivalence Thing that support STEQ files support this situation, and STEQ-POL is the only STEQ file format that does.";
-if (document.getElementById("type").value == "0") {
+/* if (document.getElementById("type").value == "0") {
 save(name+".steq",output);
-};
+}; //why is this here? */
 } else {
 output += "\n"
 document.getElementById('invalid').style.display = 'none';
-save(name+".steq",output);
+document.getElementById('pdata').style.display = 'none';
+if (pv) {
+	preview(output);
+	} else {
+	save(name+".steq",output);
+	};
 };
 };
 </script>
