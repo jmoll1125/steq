@@ -85,10 +85,9 @@ function save(filename, data) {
 		}
 } //https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server/18197341#18197341
 function preview(data) {
-	if (document.getElementById("invalid").textContent!=="") {
-		document.getElementById("invalid").textContent += "\n\n";
-		};
+	if (document.getElementById("invalid").textContent=="") {
 	document.getElementById("invalid").textContent += "Save the below text as a plain-text file with the extention .steq. You must save the text exactly as displayed (i.e. include the trailing newline) for the Sun Times Equivalence Thing to accept your file.";
+	};
 	document.getElementById("pdata").value = data;
 	document.getElementById('invalid').style.display = 'block';
 	document.getElementById('pdata').style.display = 'block';
@@ -232,7 +231,8 @@ document.getElementById("invalid").style.display = "block";
 document.getElementById('pdata').style.display = 'none';
 document.getElementById("invalid").textContent = "Your location has one or more days where the sun is above or below the horizon for the entire day. No versions of the Sun Times Equivalence Thing that support STEQ files support this situation, and STEQ-POL is the only STEQ file format that does.";
 if (document.getElementById("type").value == "0") {
-document.getElementById("invalid").textContent = "Your location has one or more days where the sun is above or below the horizon for the entire day. No versions of the Sun Times Equivalence Thing that support STEQ files were ever created to support this situation. However, STEQ-POL does; in fact, modern versions of the Sun Times Equivalence Thing use it internally.";
+output += "\n"
+document.getElementById("invalid").textContent = "Your location has one or more days where the sun is above or below the horizon for the entire day. No versions of the Sun Times Equivalence Thing that support STEQ files were ever created to support this situation, although the STEQ-POL format does. In fact, modern versions of the Sun Times Equivalence Thing use STEQ-POL internally.\n\n This file will not work with the Sun Times Equivalence Thing, but it is provided if you are curious about the file format.";
 if (pv) {
 	preview(output);
 	} else {
