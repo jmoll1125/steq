@@ -51,12 +51,12 @@ While STEQ-JUL stores its times in English-language format, STEQ-DYN replaces th
 This format is the same as STEQ-DYN, but without the daylight duration. Since it is so similar to STEQ-DYN, every version of the Sun Times Equivalence Thing that can read STEQ-NDL files is backwards compatible with STEQ-DYN (except the version the former was introduced, steqintl3b3). <a href="archive/homeNDL.txt">Here&rsquo;s an example.</a></p>
 <h2>STEQ-POL</h2>
 <p>Namesake: &ldquo;polar&rdquo; (its converter had better support for edge cases that happen near the poles)<br>
-STEQ-POL&rsquo;s converter added support for a few edge cases:
+STEQ-POL&rsquo;s converter added support for a few edge cases:</p>
 <ul>
 <li class="dash">the sun rises, sets, and then rises twice in the same day (or vice versa). If there are two sunrises or sunsets, they are placed in the same space but separated by the letter d, like this: <code>0019d2356</code>.</li>
 <li class="dash">the sun rises but does not set (or vice versa). This is represented with &ldquo;NULL&rdquo; in place of where the sunrise or sunset would go.</li>
 </ul>
-These cases only happen in polar locations around the beginning/end of midnight sun or polar night. They're what made STEQ-POL &ldquo;polar&rdquo; and so difficult to get working, and the increasing unwieldiness of these edge cases and STEQ files in general caused me to abandon both.</p>
+<p>These cases only happen in polar locations around the beginning/end of midnight sun or polar night. They're what made STEQ-POL &ldquo;polar&rdquo; and so difficult to get working, and the increasing unwieldiness of these edge cases and STEQ files in general caused me to abandon both.</p>
 <p>STEQ-POL was created to maintain maximum compatibility with USNO-provided data, which sometimes had these edge cases. Sun Times Equivalence Thing versions made since July 2019 use a different code base and cannot produce these edge cases. The HTML converter uses the same code base as STEQINTL versions after July 2019, and so its data does not cover the edge cases that STEQ-POL was meant to. Generating a STEQ-POL file here may not be as &ldquo;authentic&rdquo; as it could have been.
 <a href="archive/tromsoPOL.txt">Click here to see an example of a STEQ-POL file with edge cases.</a></p>
 <p>Versions of the Sun Times Equivalence Thing compatible with STEQ-POL were also meant to add support for locations where the sun stayed above or below the horizon the entire day, but that support was never added. This is why you may have received a warning when trying to generate your own STEQ-POL file. No support for this type of location was ever added to a version of the Sun Times Equivalence Thing compatible with STEQ files; it was only added alongside the ability to generate data on-the-fly without the need of a converter.</p>

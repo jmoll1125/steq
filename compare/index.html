@@ -40,8 +40,8 @@
 <div id="locpicker">
 <button id="add" class="mockbutton" onclick="add();">Add a new location</button>
 <button id="save" class="mockbutton" onclick="validate();">Save</button>
-<label for="loclist" id="loclistx">Select locations to compare:</label>
-<ul class="nothing" name="loclist" id="loclist"></ul>
+<p id="loclistx">Select locations to compare:</p>
+<ul class="nothing" id="loclist"></ul>
 <button id="edit" class="mockbutton" onclick="showEdits();">Edit locations</button>
 </div>
 <div id="check">
@@ -93,7 +93,7 @@
 <option value="30">30</option>
 <option value="31">31</option>
 </select>
-<input type="number" id="year" min="1" max="9999" class="mockbutton"></input>
+<input type="number" id="year" min="1" max="9999" class="mockbutton">
 <br>
 <button id="submit" class="mockbutton" onclick="goodDate();">Submit</button>
 <div id="results"></div>
