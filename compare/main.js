@@ -1,27 +1,111 @@
-//March 26, 2023, February 22-23, 2024, July 29-31, 2024
-var locN = [];
+//March 26, 2023, February 22-23, 2024, July 29-31, 2024, November 1, 2025
+//almost deceptively easy to add locstorage to this... still need to clean up the washed line though
+let locstorage = localStorage.getItem("locstorage");
+let locN = [];
 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-function add() {
+window.onload = function() {
+locstorage = JSON.parse(locstorage);
+if(typeof(locstorage) !== "object" || locstorage === null) {
+	locstorage = {};
+} else {
+	locN = Object.keys(locstorage);
+	if (locN.length == 0) {
+	} else {
+		for (let j=0; j < locN.length; j++) {
+			add(locN[j]);
+		};
+		for (let k=0; k < locN.length; k++) {
+			load(locN[k]);
+		};
+		validate();
+	};
+};
+};
+function load(loc) {
+	console.log(loc);
+	console.log(document.getElementById("name"+loc));
+	console.log(locstorage[loc]["name"])
+	document.getElementById("name"+loc).value = locstorage[loc]["name"];
+	document.getElementById("lat"+loc).value = locstorage[loc]["lat"];
+	document.getElementById("lon"+loc).value = locstorage[loc]["lon"];
+	document.getElementById("tz"+loc).value = locstorage[loc]["tz"];
+	document.getElementById("dst"+loc).value = locstorage[loc]["dst"]; 
+};
+function save() {
+localStorage.setItem('locstorage', JSON.stringify(locstorage));
+};
+function clear() {
+	locstorage = null
+	save();
+};
+//let locstorage = {};
+function makeLabel(labelee, label) {
+let newelem = document.createElement("label");
+newelem.setAttribute("for", labelee);
+newelem.textContent = label;
+return newelem;
+};
+function makeElement(format, nonce) {
+	let newelem = document.createElement(format["elem"]);
+	newelem.setAttribute("class", "mockbutton");
+	newelem.setAttribute("id", format["idpref"]+nonce);
+	if (format["elem"] = "input") {
+		newelem.setAttribute("type", format["type"]);
+		newelem.setAttribute("name", format["idpref"]); //unneeded?
+		if (format["type"] == "number") {
+			newelem.setAttribute("min", format["min"]);
+			newelem.setAttribute("max", format["max"]);
+		};
+	} else { //select
+	};
+	return newelem;
+};
+function add(nonce) {
 	document.getElementById('save').style.display = 'block';
 	var newdiv = document.createElement("div")
-	var nonce = (Math.random() + 1).toString(36).substring(2); //https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-	newdiv.innerHTML = `
-	<span class="ib"><label for="name`+nonce+`">Place name: </label><input type="text" id="name`+nonce+`" class="mockbutton"></span>
-	<span class="ib"><label for="lat`+nonce+`">Latitude: </label><input type="number" id="lat`+nonce+`" name="lat" min="-90" max="90" class="mockbutton"></span>
-	<span class="ib"><label for="lon`+nonce+`">Longitude: </label><input type="number" id="lon`+nonce+`" name="lon" min="-180" max="180" class="mockbutton"></span>
-	<span class="ib"><label for="tz`+nonce+`">Time zone (winter): </label><input type="number" id="tz`+nonce+`" name="tz" min="-12" max="14" class="mockbutton"></span>
-	<span class="ib"><label for="dst`+nonce+`">DST rule: </label>
-	<select id="dst`+nonce+`" size="1" class="mockbutton">
-	<option value="us">us</option>
-	<option value="eu">eu</option>
-	<option value="no">no</option>
-	</select></span>
-	<button id="del`+nonce+`" class="mockbutton" onclick="del(this.id);">Delete</button>
-<p id="invalid`+nonce+`" class="error" style="display:none"></p>`
+	if (nonce === undefined) {
+		nonce = (Math.random() + 1).toString(36).substring(2); //https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+		locstorage[nonce] = {}; //creates object with nonce name inside locstorage, object of locations
+		locN.push(nonce);
+	};
 	newdiv.id = "input-data"+nonce;
 	document.getElementById("locs").appendChild(newdiv);
-	locN.push(nonce);
-	document.getElementById('name'+locN[locN.length-1]).focus();
+	//save();
+	//
+	let name = {"elem" : "input", "type" : "text", "idpref" : "name", "label":"Place name: "};
+	let lat = {"elem" : "input", "type" : "number", "idpref" : "lat", "label":"Latitude: ", "min" : "-90", "max" : "90"};
+	let lon = {"elem" : "input", "type" : "number", "idpref" : "lon", "label":"Longitude: ", "min" : "-180", "max" : "180"};
+	let tz = {"elem" : "input", "type" : "number", "idpref" : "tz", "label":"Time zone (winter): ", "min" : "-12", "max" : "14"};
+	let dst = {"label" : "DST rule: ", "elem" : "select", "idpref" : "dst", "options" : ["us","eu","no"]}; //option size = 1 unnecessary?
+	document.getElementById(newdiv.id).appendChild(makeLabel(name["idpref"]+nonce, name["label"]));
+	document.getElementById(newdiv.id).appendChild(makeElement(name, nonce));
+	document.getElementById(newdiv.id).appendChild(makeLabel(lat["idpref"]+nonce, lat["label"]));
+	document.getElementById(newdiv.id).appendChild(makeElement(lat, nonce));
+	document.getElementById(newdiv.id).appendChild(makeLabel(lon["idpref"]+nonce, lon["label"]));
+	document.getElementById(newdiv.id).appendChild(makeElement(lon, nonce));
+	document.getElementById(newdiv.id).appendChild(makeLabel(tz["idpref"]+nonce, tz["label"]));
+	document.getElementById(newdiv.id).appendChild(makeElement(tz, nonce));
+	document.getElementById(newdiv.id).appendChild(makeLabel(dst["idpref"]+nonce, dst["label"]));
+	document.getElementById(newdiv.id).appendChild(makeElement(dst, nonce));
+	let options = dst["options"]
+	for (i = 0; i < options.length; i++) {	
+		let newoption = document.createElement("option")
+		newoption.textContent = options[i]
+		newoption.value = options[i]
+		document.getElementById("dst"+nonce).appendChild(newoption);
+	};
+	let newbutton = document.createElement("button");
+	newbutton.setAttribute("id", "del"+nonce);
+	newbutton.setAttribute("onclick", "del(this.id)");
+	newbutton.textContent = "Delete";
+	newbutton.setAttribute("class", "mockbutton");
+	document.getElementById(newdiv.id).appendChild(newbutton);
+	let newerrors = document.createElement("p");
+	newerrors.setAttribute("style", "display:none");
+	newerrors.setAttribute("id", "invalid"+nonce);
+	newerrors.setAttribute("class", "error");
+	document.getElementById(newdiv.id).appendChild(newerrors);
+	document.getElementById('name'+nonce).focus(); // length of locN = Object.keys(locN).length
 };
 function hideEdits() {
 	document.getElementById('loclist').innerHTML = ""
@@ -61,12 +145,14 @@ function showEdits() {
 function del(N) {
 	N = N.substring(3);
 	document.getElementById("input-data"+N).remove();
+	delete locstorage[N];
 	locN.splice(locN.indexOf(N), 1)
 	if(locN.length === 0) {
 	document.getElementById('save').style.display = 'none';
 	} else {
 	document.getElementById('name'+locN[locN.length-1]).focus();
 	};
+	save();
 };
 function getDayOfYear(num) {
 	outMonth = 0;
@@ -135,6 +221,12 @@ if (locN.length == 1) {
 allErrors += errors;
 if (errors === "") {
 	document.getElementById('invalid'+locN[i]).style.display = 'none';
+	locstorage[locN[i]]["name"] = name;
+	locstorage[locN[i]]["lat"] = lat;
+	locstorage[locN[i]]["lon"] = lon;
+	locstorage[locN[i]]["tz"] = tz;
+	locstorage[locN[i]]["dst"] = dst;
+	save();
 	continue;
 } else {
 document.getElementById('invalid'+locN[i]).style.display = 'block';
