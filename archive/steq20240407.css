@@ -59,4 +59,3 @@ li.loclist { padding: 2px; }
 #navbar {background-color: #44bbff; overflow: hidden; margin-top: auto; bottom: 0; width: 100%; display: flex; }
 #navbar a {padding-left: 20px; padding-right: 20px; font-family: Verdana, sans-serif; color: white;}
 #pdata {font-family: monospace;  width: 90%; height: 6em;}
-input.mockbutton , select.mockbutton {margin-right: 5px;}
