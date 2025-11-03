@@ -641,7 +641,7 @@ function output() {
 			for(let j = 0; j<locschecked.length; j++) {
 				sunriseoccurs = search(vitals_dict[order[z+2]][j],vitals_dict[order[z]][i],i===j);
 				sunriseoccurs = intoDates(sunriseoccurs);
-				if (sunriseoccurs === "no other date!" && i !== j) {
+				if (sunriseoccurs === "no other date!" && i !== j && vitals_dict[order[z]][i] !== vitals_dict[order[z]][j]) {
 					let common = " never "+doAMPM(vitals_dict[order[z]][i],z);
 					if (common.indexOf("does not") !== -1 && vitals_dict["daylight"][i] === "00:00") {
 						common = "is never below the horizon throughout the entire day";
@@ -717,7 +717,7 @@ function output() {
 		for(let j = 0; j<locschecked.length; j++) {
 			sunriseoccurs = search(vitals_dict["daylights"][j],vitals_dict["daylight"][i],i===j)
 			sunriseoccurs = convertDaylight(sunriseoccurs);
-			if (sunriseoccurs === "no other date" && i !== j) {
+			if (sunriseoccurs === "no other date" && i !== j && vitals_dict["daylight"][i] !== vitals_dict["daylight"][j]) {
 					results += name[j]+ " never has "+makeDurationPretty(vitals_dict["daylight"][i])+" of daylight.\n\n" 
 				} else {
 					let common = "";
